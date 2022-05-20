@@ -411,6 +411,11 @@ begin
 end;
 
 function TfrmMain.checkPaths : Boolean;
+var
+    mCurrentDirectory : String;
+    mDirectoryList : TDirectoryListBox;
+    mDir : String;
+    I : Integer;
 begin
     Result := False;
 
@@ -442,12 +447,56 @@ begin
         end;
     end;
 
+    if FEncryptosBotPath.IsEmpty then
+    begin
+            mCurrentDirectory := ExtractFileDir(ParamStr(0));
+
+            if FileExists(mCurrentDirectory + '\.env') then
+            begin
+                FEncryptosBotPath := mCurrentDirectory;
+            end else
+            begin
+                mDirectoryList        := TDirectoryListBox.Create(nil);
+                mDirectoryList.Parent := Self;
+
+                mDirectoryList.Directory := ExtractFileDir(ExcludeTrailingPathDelimiter(mCurrentDirectory));
+
+
+                for I := mDirectoryList.ItemIndex to Pred(mDirectoryList.Items.Count) do
+                begin
+                    mDir := mDirectoryList.GetItemPath(I);
+                    if FileExists(mDir + '\.env') then
+                    begin
+                        FEncryptosBotPath := mDir;
+                        Break;
+                    end;
+                end;
+
+                if not FEncryptosBotPath.IsEmpty then
+                begin
+                    if Not FileExists(FEncryptosBotPath + '\.env') or
+                       Not FileExists(FEncryptosBotPath + '\notification.log') then
+
+                        FEncryptosBotPath := '';
+                end;
+
+                mDirectoryList.Free;
+
+            end;
+    end;
+
+    mDir                  := '';
+    edtBotFolder.Text     := FEncryptosBotPath;
+
     pnlPathConfig.Visible := FEncryptosBotPath.IsEmpty or FNodePath.IsEmpty;
     pnlFundo.Visible      := not pnlPathConfig.Visible;
 
     Result := pnlFundo.Visible;
 
     pnlLog.Visible := Result;
+
+    if Result then
+        SavePaths;
 end;
 
 procedure TfrmMain.Close1Click(Sender: TObject);

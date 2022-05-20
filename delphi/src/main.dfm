@@ -765,7 +765,6 @@ object frmMain: TfrmMain
       WordWrap = wwNone
       OnCursorChange = mmLogCursorChange
       OnSelectionChange = mmLogSelectionChange
-      ExplicitLeft = 2
     end
     object btnFimLog: TAdvShapeButton
       Left = 206
