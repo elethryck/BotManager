@@ -131,9 +131,9 @@ type
     FBotStartTask    : ITask;
     FNodeMonitor     : ITask;
     FSelectedItem    : TItems;
-    FLocating   : Boolean;
-    FMonitoring : Boolean;
-
+    FLocating    : Boolean;
+    FMonitoring  : Boolean;
+    FLogClear    : Boolean;
     FNodeProcess : TProcessInformation;
     FConfigFile : TRoot;
 
@@ -566,7 +566,10 @@ end;
 procedure TfrmMain.btnLogClearClick(Sender: TObject);
 begin
     if FMonitoring then
-        RestartBot;
+    begin
+        FLogClear := True;
+        Exit;
+    end;
 
     try
         mmLog.Lines.Clear;
@@ -1281,7 +1284,7 @@ begin
         begin
             mFile := TStringList.Create;
 
-            mFileStream := TFileStream.Create(FEncryptosBotPath + '\notification.log', fmOpenRead or fmShareDenyNone);
+            mFileStream := TFileStream.Create(FEncryptosBotPath + '\notification.log', fmOpenReadWrite or fmShareDenyNone);
 
             mLastLine         := 0;
             mLastLineContent  := '';
@@ -1297,6 +1300,21 @@ begin
                 begin
 
                     try
+                        if FLogClear then
+                        begin
+
+                            FLogClear := False;
+
+                            mFileStream.Free;
+
+                            mFileStream := TFileStream.Create(FEncryptosBotPath + '\notification.log', fmCreate or fmShareDenyNone);
+                            mFileStream.Free;
+                            mFileStream := TFileStream.Create(FEncryptosBotPath + '\notification.log', fmOpenRead or fmShareDenyNone);
+                            mmLog.Clear;
+                            mmLog.GotoBegin;
+
+                        End;
+
                         mFile.LoadFromStream(mFileStream);
                         //mFile.LoadFromFile(FEncryptosBotPath + '\notification.log');
                     except on E: Exception do
