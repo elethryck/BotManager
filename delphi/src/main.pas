@@ -15,7 +15,8 @@ uses
   AeroButtons, Vcl.AppEvnts, AdvScrollControl, AdvRichEditorBase, AdvRichEditor,
   AdvMemo, AdvMemoStylerManager, AdvmPS, AdvmWS, AdvCodeList, AdvmCSS, Advmxml,
   AdvSearchList, AdvSearchEdit, AdvShapeButton, Vcl.Imaging.pngimage, AdvPanel,
-  System.ImageList, Vcl.ImgList, PairAlertEntity, AdvGlowButton;
+  System.ImageList, Vcl.ImgList, PairAlertEntity, AdvGlowButton,
+  Vcl.Imaging.jpeg;
 
 type
 
@@ -75,6 +76,8 @@ type
     Button1: TButton;
     btnLogExpandAux: TAdvShapeButton;
     btnFimLog: TAdvShapeButton;
+    pnlPIX: TPanel;
+    Image1: TImage;
     procedure FormCreate(Sender: TObject);
     procedure btnStartClick(Sender: TObject);
     procedure btnStopClick(Sender: TObject);
@@ -124,8 +127,12 @@ type
     procedure btnLogExpandClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure btnFimLogClick(Sender: TObject);
+    procedure Image1Click(Sender: TObject);
+    procedure dbgDadosDblClick(Sender: TObject);
+    procedure dbgDadosKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private declarations }
+
 
     FFileMonitorTask : ITask;
     FBotStartTask    : ITask;
@@ -135,7 +142,8 @@ type
     FMonitoring  : Boolean;
     FLogClear    : Boolean;
     FNodeProcess : TProcessInformation;
-    FConfigFile : TRoot;
+    FConfigFile  : TRoot;
+    FGridFocused : Boolean;
 
     FStopped   : Boolean;
     FClosing   : Boolean;
@@ -185,7 +193,7 @@ type
     procedure ServiceStatusTitle();
   public
     { Public declarations }
-
+    const VERSAO = 'v1.00.004';
     const CRT = '+------------------------------------------------------------+'+ #13 +
                 '|               Bot Manager for Encryptos Bot                |'+ #13 +
                 '+------------------------------------------------------------+'+ #13 +
@@ -195,6 +203,7 @@ type
                 '|                                                            |'+ #13 +
                 '| Donate                                                     |'+ #13 +
                 '|                                                            |'+ #13 +
+                '| PIX        : 54b2b96c-b1e4-49ce-92eb-ce69ac8f00a1          |'+ #13 +
                 '| LTC address: LWuLWcfLfwa6hwJr5YmvQfEzGJs9k5Aw87            |'+ #13 +
                 '| BNB address: 0x4d6282e42245dc4e73db3a9d775c3894b8b0403f    |'+ #13 +
                 '+------------------------------------------------------------+';
@@ -209,7 +218,7 @@ var
 implementation
 
 uses
-  DataModulo, PairAdd, REST.Json, FileCtrl, ChangeLOG, KeyForm, Vcl.Themes;
+  DataModulo, PairAdd, REST.Json, FileCtrl, ChangeLOG, KeyForm, Vcl.Themes, PIX;
 
 {$R *.dfm}
 
@@ -354,7 +363,9 @@ begin
                         mmConsole.Clear;
 
                         mmCOnsole.Lines.Text := CRT;
+                        pnlPIX.Visible       := True;
                         mmConsole.Lines.Add('Bot is running...');
+
                         Exit;
                     end;
 
@@ -612,6 +623,7 @@ begin
 
     mmConsole.Clear;
     mmConsole.Lines.Add('Bot ON, good trading!');
+    pnlPIX.Visible := False;
 
     LogMonitor();
 
@@ -650,10 +662,14 @@ begin
     FALerts.Add(mmLog.Selection);
 end;
 
+procedure TfrmMain.dbgDadosDblClick(Sender: TObject);
+begin
+    ToggleInactive;
+end;
+
 procedure TfrmMain.dbgDadosDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
 begin
-
 
     TDbGrid(Sender).Canvas.font.Color:= $001CBD34;
     {
@@ -676,6 +692,17 @@ begin
 
     TDBGrid(Sender).Canvas.FillRect(Rect);
     TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
+end;
+
+procedure TfrmMain.dbgDadosKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+    if Key = VK_SPACE then
+    begin
+        FGridFocused := True;
+        ToggleInactive;
+        FGridFocused := False;
+    end;
 end;
 
 function TfrmMain.doConfigFile: boolean;
@@ -804,6 +831,8 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 var
     mFile : TStringList;
 begin
+    //Self.WindowState := wsMaximized;
+
     mmConsole.Lines.Clear;
     mmConsole.Lines.Text := CRT;
 
@@ -890,6 +919,19 @@ begin
     Result := TStringList.Create;
 
     Result.LoadFromFile(FEncryptosBotPath + '\.env');
+end;
+
+procedure TfrmMain.Image1Click(Sender: TObject);
+begin
+    if frmPIX = nil then
+        Application.CreateForm(TfrmPix, frmPIX);
+
+    try
+        frmPIX.ShowModal;
+    finally
+        frmPIX.Release;
+        frmPIX := Nil;
+    end;
 end;
 
 procedure TfrmMain.InactivateALL1Click(Sender: TObject);
@@ -1048,7 +1090,8 @@ begin
     qryDados.FieldByName('json').AsString      := pItem.AsJson;
     qryDados.Post;
 
-    edtLocate.SetFocus;
+    if Not FGridFocused then
+        edtLocate.SetFocus;
 end;
 
 procedure TfrmMain.qryDadosAfterOpen(DataSet: TDataSet);
@@ -1128,10 +1171,10 @@ end;
 
 procedure TfrmMain.ServiceStatusTitle;
 begin
-    Self.Caption := 'Bot Manager OFF';
+    Self.Caption := 'Bot Manager ' + VERSAO + ' OFF';
 
     if FMonitoring then
-        Self.Caption := 'Bot Manager ON'
+        Self.Caption := 'Bot Manager ' + VERSAO + ' ON';
 end;
 
 procedure TfrmMain.setInactive(pInactive: Boolean);

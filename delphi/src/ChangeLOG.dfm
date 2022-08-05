@@ -109,6 +109,21 @@ object frmChangeLog: TfrmChangeLog
       Font.Style = []
       HiddenCaret = False
       Lines.Strings = (
+        'Vers'#227'o 1.00.004 - 04/08/2022'
+        '    -> Novidades'
+        
+          '        - Adicionado QrCode PIX para contribui'#231#227'o com o Projeto;' +
+          ' '
+        
+          '        - Barra de Espa'#231'o ou Clicar duas vezes na lista de Pares' +
+          ', Ativa ou '
+        '          Desativa o Par;'
+        '    '
+        '    > Corre'#231#245'es'
+        
+          '        - Corrigido travamento ao limpar o LOG com o bot rodando' +
+          '. '
+        ''
         'Vers'#227'o 1.00.003 - 25/04/2022'
         '    -> Novidades'
         
@@ -118,7 +133,7 @@ object frmChangeLog: TfrmChangeLog
         
           '        - Melhoria na rotina de leitura do log para n'#227'o causar e' +
           'rros de arquivo'
-        '          em uso.'
+        '          em uso.   '
         '          '
         'Vers'#227'o 1.00.002 - 14/04/2022'
         '    -> Novidades'

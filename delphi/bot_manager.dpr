@@ -14,7 +14,9 @@ uses
   PairAlertEntity in 'src\PairAlertEntity.pas',
   RuleEntity in 'src\RuleEntity.pas',
   ChangeLOG in 'src\ChangeLOG.pas' {frmChangeLog},
-  KeyForm in 'src\KeyForm.pas' {frmKey};
+  KeyForm in 'src\KeyForm.pas' {frmKey},
+  AlertTypes in 'src\AlertTypes.pas',
+  PIX in 'src\PIX.pas' {frmPIX};
 
 {$R *.res}
 
