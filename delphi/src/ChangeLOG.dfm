@@ -109,7 +109,11 @@ object frmChangeLog: TfrmChangeLog
       Font.Style = []
       HiddenCaret = False
       Lines.Strings = (
-        'Vers'#227'o 1.00.005 - 15/09/2022'
+        'Vers'#227'o 1.00.006 - 16/09/2022'
+        '    > Corre'#231#245'es'
+        '        - Corrigido o sumi'#231'o do bot'#227'o de ir para o fim do log.  '
+        '        '
+        'Vers'#227'o 1.00.005 - 15/09/2022                   '
         '    -> Novidades'
         
           '        - Agora pode desativar o StoreToast, o Bot Manager '#233' res' +

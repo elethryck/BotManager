@@ -81,7 +81,6 @@ type
     BitBtn2: TBitBtn;
     Button1: TButton;
     mmLog: TAdvMemo;
-    btnFimLog: TAdvShapeButton;
     pnlLogConfig: TPanel;
     Bevel4: TBevel;
     Label1: TLabel;
@@ -101,6 +100,7 @@ type
     chkAutoScroll: TCheckBox;
     Panel2: TPanel;
     Label6: TLabel;
+    btnFimLog: TAdvShapeButton;
     procedure FormCreate(Sender: TObject);
     procedure btnStartClick(Sender: TObject);
     procedure btnStopClick(Sender: TObject);
@@ -228,7 +228,7 @@ type
     procedure FetchDonates(pDonationsJSON : String);
   public
     { Public declarations }
-    const VERSAO = 'v1.00.005';
+    const VERSAO = 'v1.00.006';
     const CRT = '+------------------------------------------------------------+'+ #13 +
                 '|               Bot Manager for Encryptos Bot                |'+ #13 +
                 '+------------------------------------------------------------+'+ #13 +
