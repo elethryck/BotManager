@@ -146,6 +146,8 @@
             <Form>frmPIX</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="src\BotNotification.pas"/>
+        <DCCReference Include="src\DoadoresDTO.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

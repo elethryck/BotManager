@@ -16,7 +16,8 @@ uses
   AdvMemo, AdvMemoStylerManager, AdvmPS, AdvmWS, AdvCodeList, AdvmCSS, Advmxml,
   AdvSearchList, AdvSearchEdit, AdvShapeButton, Vcl.Imaging.pngimage, AdvPanel,
   System.ImageList, Vcl.ImgList, PairAlertEntity, AdvGlowButton,
-  Vcl.Imaging.jpeg;
+  Vcl.Imaging.jpeg, System.Notification, BotNotification, REST.Types,
+  REST.Client, Data.Bind.Components, Data.Bind.ObjectScope, AdvCircularProgress;
 
 type
 
@@ -56,15 +57,6 @@ type
     appEvents: TApplicationEvents;
     tmrTitle: TTimer;
     ChangeLog1: TMenuItem;
-    pnlLog: TPanel;
-    pnlLogHeader: TPanel;
-    Label2: TLabel;
-    edtLogSearch: TSearchBox;
-    pnlLogBottom: TPanel;
-    btnLogClear: TBitBtn;
-    BitBtn2: TBitBtn;
-    mmLog: TAdvMemo;
-    btnLogExpand: TAdvShapeButton;
     pnlPathConfig: TPanel;
     Label3: TLabel;
     Label4: TLabel;
@@ -73,11 +65,42 @@ type
     edtNodePath: TEdit;
     edtBotFolder: TEdit;
     BitBtn1: TBitBtn;
-    Button1: TButton;
-    btnLogExpandAux: TAdvShapeButton;
-    btnFimLog: TAdvShapeButton;
     pnlPIX: TPanel;
     Image1: TImage;
+    NotificationCenter: TNotificationCenter;
+    pgControl: TPageControl;
+    tsLog: TTabSheet;
+    pnlLog: TPanel;
+    pnlLogHeader: TPanel;
+    Label2: TLabel;
+    edtLogSearch: TSearchBox;
+    btnLogExpand: TAdvShapeButton;
+    btnLogExpandAux: TAdvShapeButton;
+    pnlLogBottom: TPanel;
+    btnLogClear: TBitBtn;
+    BitBtn2: TBitBtn;
+    Button1: TButton;
+    mmLog: TAdvMemo;
+    btnFimLog: TAdvShapeButton;
+    pnlLogConfig: TPanel;
+    Bevel4: TBevel;
+    Label1: TLabel;
+    Bevel3: TBevel;
+    chkOnlyX: TCheckBox;
+    chkLSRAlert: TCheckBox;
+    chkNoAlerts: TCheckBox;
+    tsDonates: TTabSheet;
+    RESTRequest: TRESTRequest;
+    RESTResponse: TRESTResponse;
+    RESTClient: TRESTClient;
+    tmrDonates: TTimer;
+    Loading: TAdvCircularProgress;
+    dsDoacoes: TDataSource;
+    qryDoacoes: TFDQuery;
+    DBGrid1: TDBGrid;
+    chkAutoScroll: TCheckBox;
+    Panel2: TPanel;
+    Label6: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure btnStartClick(Sender: TObject);
     procedure btnStopClick(Sender: TObject);
@@ -130,9 +153,16 @@ type
     procedure Image1Click(Sender: TObject);
     procedure dbgDadosDblClick(Sender: TObject);
     procedure dbgDadosKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure chkOnlyXClick(Sender: TObject);
+    procedure chkLSRAlertClick(Sender: TObject);
+    procedure chkNoAlertsClick(Sender: TObject);
+    procedure tmrDonatesTimer(Sender: TObject);
+    procedure chkAutoScrollClick(Sender: TObject);
   private
     { Private declarations }
 
+    FNotificationCenter : TBotNotificationCenter;
+    FActivePairs : TRoot;
 
     FFileMonitorTask : ITask;
     FBotStartTask    : ITask;
@@ -175,6 +205,7 @@ type
 
     procedure Content();
     procedure LoadData();
+    procedure LoadDonates();
     procedure onUpdated(pItem : TItems);
 
     procedure CaptureConsoleOutput(const ACommand, AParameters: String; AMemo: TMemo);
@@ -191,9 +222,13 @@ type
     procedure PoeAnd(var pStr : String);
 
     procedure ServiceStatusTitle();
+
+    procedure Notificate(pLogLine : String);
+
+    procedure FetchDonates(pDonationsJSON : String);
   public
     { Public declarations }
-    const VERSAO = 'v1.00.004';
+    const VERSAO = 'v1.00.005';
     const CRT = '+------------------------------------------------------------+'+ #13 +
                 '|               Bot Manager for Encryptos Bot                |'+ #13 +
                 '+------------------------------------------------------------+'+ #13 +
@@ -204,8 +239,8 @@ type
                 '| Donate                                                     |'+ #13 +
                 '|                                                            |'+ #13 +
                 '| PIX        : 54b2b96c-b1e4-49ce-92eb-ce69ac8f00a1          |'+ #13 +
-                '| LTC address: LWuLWcfLfwa6hwJr5YmvQfEzGJs9k5Aw87            |'+ #13 +
-                '| BNB address: 0x4d6282e42245dc4e73db3a9d775c3894b8b0403f    |'+ #13 +
+                '| LTC (ltc)  : LWuLWcfLfwa6hwJr5YmvQfEzGJs9k5Aw87            |'+ #13 +
+                '| BNB (BEP20): 0x4d6282e42245dc4e73db3a9d775c3894b8b0403f    |'+ #13 +
                 '+------------------------------------------------------------+';
 
   end;
@@ -218,7 +253,8 @@ var
 implementation
 
 uses
-  DataModulo, PairAdd, REST.Json, FileCtrl, ChangeLOG, KeyForm, Vcl.Themes, PIX;
+  DataModulo, PairAdd, REST.Json, FileCtrl, ChangeLOG, KeyForm, Vcl.Themes, PIX,
+  DoadoresDTO;
 
 {$R *.dfm}
 
@@ -510,6 +546,45 @@ begin
         SavePaths;
 end;
 
+procedure TfrmMain.chkAutoScrollClick(Sender: TObject);
+begin
+    with getConfigFile do
+    begin
+        WriteBool('Log', 'AutoScroll', chkAutoScroll.Checked);
+        Free;
+    end;
+end;
+
+procedure TfrmMain.chkLSRAlertClick(Sender: TObject);
+begin
+    with getConfigFile do
+    begin
+        WriteBool('Notifications', 'LSR', chkLSRAlert.Checked);
+        Free;
+    end;
+end;
+
+procedure TfrmMain.chkNoAlertsClick(Sender: TObject);
+begin
+    with getConfigFile do
+    begin
+        WriteBool('Notifications', 'NoAlerts', chkNoAlerts.Checked);
+        Free;
+    end;
+
+    chkOnlyX.Enabled    := Not chkNoAlerts.Checked;
+    chkLSRAlert.Enabled := Not chkNoAlerts.Checked;
+end;
+
+procedure TfrmMain.chkOnlyXClick(Sender: TObject);
+begin
+    with getConfigFile do
+    begin
+        WriteBool('Notifications', 'onlyX', chkOnlyX.Checked);
+        Free;
+    end;
+end;
+
 procedure TfrmMain.Close1Click(Sender: TObject);
 begin
     Close();
@@ -710,7 +785,6 @@ var
     mItem : TItems;
     mQry : TFDQuery;
     mSQL : String;
-    mRoot : TRoot;
     mConfigFile : TStringList;
 
     mJSON : String;
@@ -719,7 +793,9 @@ begin
     try
         mQry        := TFDQuery.Create(nil);
         mConfigFile := TStringList.Create;
-        mRoot       := TRoot.Create;
+
+        FActivePairs.Items.Clear;
+
         try
             mQry.Connection := DM.conexao;
 
@@ -740,12 +816,12 @@ begin
                 //mItem.Symbol := mQry.FieldByName('name').AsString;
 
                 if mItem.Interval.Count > 0 then
-                    mRoot.Items.Add(mItem);
+                    FActivePairs.Items.Add(mItem);
 
                 mQry.Next;
             end;
 
-            if mRoot.Items.Count <= 0 then
+            if FActivePairs.Items.Count <= 0 then
             begin
                 MessageBox(Self.Handle, 'As configurações não foram salvas, verifique se os Pares habilitados possuem ao menos um intervalo.', 'Atenção', MB_OK + MB_ICONWARNING);
                 Exit;
@@ -755,12 +831,12 @@ begin
 
             mConfigFile.Clear;
 
-            mJSON := mRoot.AsJson;
+            mJSON := FActivePairs.AsJson;
 
             mJSON := mJSON.Replace('{"items":','');
             mJSON := mJSON.Substring(0, Pred(Length(mJSON)));
 
-            mConfigFile.Add(mRoot.PrettyPrintJSON(mJson));
+            mConfigFile.Add(FActivePairs.PrettyPrintJSON(mJson));
 
             mConfigFile.SaveToFile(FEncryptosBotPath + '\config.json');
 
@@ -774,7 +850,7 @@ begin
     finally
         FreeAndNil(mQry);
         FreeAndNil(mConfigFile);
-        FreeAndNil(mRoot);
+        //FreeAndNil(mRoot);
     end;
 
 end;
@@ -800,6 +876,48 @@ end;
 procedure TfrmMain.Fechar1Click(Sender: TObject);
 begin
     Self.Close;
+end;
+
+procedure TfrmMain.FetchDonates(pDonationsJSON : String);
+var
+    mDoacoesRoot : TDoacoesRootDTO;
+    mDoacao : TDoacaoDTO;
+    mSQL : String;
+begin
+    Loading.Visible := False;
+
+    mDoacoesRoot := TDoacoesRootDTO.Create;
+
+    try
+        mDoacoesRoot.AsJSON := pDonationsJSON;
+
+        if mDoacoesRoot.Items.Count <= 0 then
+            Exit;
+
+        qryFast.ExecSQL('DELETE FROM donates;');
+
+        for mDoacao in mDoacoesRoot.Items do
+        begin
+            mSQL := 'INSERT INTO donates(' +
+                    '   date, ' +
+                    '   name, ' +
+                    '   value, ' +
+                    '   currency, ' +
+                    '   valueUSD) ' +
+                    ' VALUES (' +
+                    QuotedStr(FormatDateTime('yyyy-mm-dd', mDoacao.Date)) + ', ' +
+                    QuotedStr(mDoacao.Name) + ', ' +
+                    FloatToStr(mDoacao.Value).Replace(',', '.') + ', ' +
+                    QuotedStr(mDoacao.Currency) + ', ' +
+                    FloatToStr(mDoacao.ValueUSD).Replace(',', '.') + ');';
+
+            qryFast.ExecSQL(mSQL);
+        end;
+
+        LoadDonates();
+    finally
+        mDoacoesRoot.Free;
+    end;
 end;
 
 procedure TfrmMain.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -832,6 +950,7 @@ var
     mFile : TStringList;
 begin
     //Self.WindowState := wsMaximized;
+    pgControl.ActivePage := tsLog;
 
     mmConsole.Lines.Clear;
     mmConsole.Lines.Text := CRT;
@@ -853,7 +972,11 @@ begin
     FFileMonitorTask  := Nil;
     FBotStartTask     := Nil;
 
+    FActivePairs      := TRoot.Create;
+
     frmPair.setCallBack(Self);
+
+    FNotificationCenter := TBotNotificationCenter.Create(Self);
 
     with getConfigFile do
     begin
@@ -868,12 +991,15 @@ begin
     end;
     if checkPaths() then
         Content();
+
+    LoadDonates;
 end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);
 begin
     FConfigFile.Free;
     FSelectedItem.Free;
+    FActivePairs.Free;
     FCustomStyle.Free;
 end;
 
@@ -892,6 +1018,16 @@ begin
 
     if pnlPathConfig.Visible then
         Exit;
+
+
+    with getConfigFile do
+    begin
+        chkOnlyX.Checked      := ReadBool('Notifications', 'onlyX', False);
+        chkLSRAlert.Checked   := ReadBool('Notifications', 'LSR', False);
+        chkNoAlerts.Checked   := ReadBool('Notifications', 'NoAlerts', False);
+        chkAutoScroll.Checked := ReadBool('Log', 'AutoScroll', False);
+        Free;
+    end;
 
     mmLog.Lines.LoadFromFile(FEncryptosBotPath + '\notification.log');
     mmLog.GotoEnd;
@@ -988,6 +1124,17 @@ begin
     qryDados.Open(mSQL);
 end;
 
+procedure TfrmMain.LoadDonates;
+var
+    mSQL : String;
+begin
+    mSQL := 'SELECT * ' +
+            '  FROM donates ' +
+            ' ORDER BY valueUSD DESC';
+
+    qryDoacoes.Open(mSQL);
+end;
+
 procedure TfrmMain.mmLogCursorChange(Sender: TObject);
 begin
     mmLog.HighlightText := mmLog.WordAtCursor;
@@ -1005,6 +1152,37 @@ begin
 
     if not pMonitoring then
         mmConsole.Lines.Add('Bot OFF');
+end;
+
+procedure TfrmMain.Notificate(pLogLine : String);
+var
+    mNotification : TNotification;
+
+    mPairName : String;
+    mMessage : String;
+begin
+    if chkNoAlerts.Checked then
+        Exit;
+
+    if Not (pLogLine.Contains('S Ratio') or pLogLine.Contains('Level:')) then
+        Exit;
+
+    if pLogLine.Contains('S Ratio') And Not chkLSRAlert.Checked then
+        Exit;
+
+    if chkOnlyX.Checked then
+    begin
+        if pLogLine.Contains('Level:') And Not pLogLine.EndsWith('X', True) then
+            Exit;
+    end;
+
+    mNotification := FNotificationCenter.CreateNotification(pLogLine);
+
+    try
+        NotificationCenter.PresentNotification(mNotification);
+    finally
+        mNotification.Free;
+    end;
 end;
 
 procedure TfrmMain.onBotStartingDone;
@@ -1170,11 +1348,15 @@ begin
 end;
 
 procedure TfrmMain.ServiceStatusTitle;
+var
+    mOnOff : String;
 begin
-    Self.Caption := 'Bot Manager ' + VERSAO + ' OFF';
+    mOnOff := ' OFF';
 
     if FMonitoring then
-        Self.Caption := 'Bot Manager ' + VERSAO + ' ON';
+        mOnOff := ' ON';
+
+    Self.Caption := 'Bot Manager ' + VERSAO + mOnOff;
 end;
 
 procedure TfrmMain.setInactive(pInactive: Boolean);
@@ -1210,6 +1392,19 @@ end;
 procedure TfrmMain.stopBot;
 begin
     FMonitoring := False;
+end;
+
+procedure TfrmMain.tmrDonatesTimer(Sender: TObject);
+begin
+    tmrDonates.Interval := 1000 * 60 * 15; //15 minutos para atualizar novamente
+    RESTClient.BaseURL := 'http://botmanager.netlify.app/.netlify/functions/donates';
+    RESTRequest.Method := rmGET;
+    RESTRequest.ExecuteAsync(
+        procedure
+        begin
+            FetchDonates(RESTResponse.Content);
+        end
+    );
 end;
 
 procedure TfrmMain.tmrTitleTimer(Sender: TObject);
@@ -1372,15 +1567,23 @@ begin
 
                     TThread.Synchronize(TThread.CurrentThread,
                         procedure
+                        var
+                            mLineContent : String;
+                            mLevelPos : Integer;
                         begin
                             mmLog.BeginUpdate;
                             while mLastLine < mFile.Count do
                             begin
+                                mLineContent := mFile.Strings[mLastLine];
+                                mmLog.Lines.Append( mLineContent );
+                                mLastLine    := mLastLine + 1;
 
-                                mmLog.Lines.Append(mFile.Strings[mLastLine]);
-                                mLastLine := mLastLine + 1;
+                                Notificate(mLineContent);
                             end;
                             mmLog.EndUpdate;
+
+                            if Not chkAutoScroll.Checked then
+                                mmLog.ScrollToBottom;
                         end
                     );
 

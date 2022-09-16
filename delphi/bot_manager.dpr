@@ -16,7 +16,9 @@ uses
   ChangeLOG in 'src\ChangeLOG.pas' {frmChangeLog},
   KeyForm in 'src\KeyForm.pas' {frmKey},
   AlertTypes in 'src\AlertTypes.pas',
-  PIX in 'src\PIX.pas' {frmPIX};
+  PIX in 'src\PIX.pas' {frmPIX},
+  BotNotification in 'src\BotNotification.pas',
+  DoadoresDTO in 'src\DoadoresDTO.pas';
 
 {$R *.res}
 

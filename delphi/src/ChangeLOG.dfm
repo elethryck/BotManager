@@ -5,7 +5,7 @@ object frmChangeLog: TfrmChangeLog
   BorderWidth = 5
   Caption = 'ChangeLOG'
   ClientHeight = 610
-  ClientWidth = 640
+  ClientWidth = 665
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,14 +21,14 @@ object frmChangeLog: TfrmChangeLog
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 640
+    Width = 665
     Height = 610
     Align = alClient
     TabOrder = 0
     object AdvMemo1: TAdvMemo
       Left = 1
       Top = 1
-      Width = 638
+      Width = 663
       Height = 608
       Cursor = crIBeam
       ActiveLineSettings.ShowActiveLine = False
@@ -109,6 +109,24 @@ object frmChangeLog: TfrmChangeLog
       Font.Style = []
       HiddenCaret = False
       Lines.Strings = (
+        'Vers'#227'o 1.00.005 - 15/09/2022'
+        '    -> Novidades'
+        
+          '        - Agora pode desativar o StoreToast, o Bot Manager '#233' res' +
+          'pons'#225'vel pelos'
+        '          alertas;'
+        
+          '        - Adicionado configura'#231#245'es para filtragem dos alertas;  ' +
+          ' '
+        
+          '        - Adiconado mural de agradecimento aos doadores do proje' +
+          'to;'
+        '    '
+        '    > Corre'#231#245'es'
+        
+          '        - Corrigido intermit'#234'ncia ON/OFF no t'#237'tulo da aplica'#231#227'o.' +
+          '                '
+        ''
         'Vers'#227'o 1.00.004 - 04/08/2022'
         '    -> Novidades'
         
@@ -117,13 +135,13 @@ object frmChangeLog: TfrmChangeLog
         
           '        - Barra de Espa'#231'o ou Clicar duas vezes na lista de Pares' +
           ', Ativa ou '
-        '          Desativa o Par;'
+        '          Desativa o Par;   '
         '    '
         '    > Corre'#231#245'es'
         
           '        - Corrigido travamento ao limpar o LOG com o bot rodando' +
           '. '
-        ''
+        '      '
         'Vers'#227'o 1.00.003 - 25/04/2022'
         '    -> Novidades'
         

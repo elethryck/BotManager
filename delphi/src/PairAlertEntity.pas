@@ -93,7 +93,7 @@ begin
 
     mList.AddStrings(mContent);
 
-    if Not mContent[2].Contains('USDT') then
+    if Not (mContent[2].Contains('USDT') or mContent[2].Contains('BUSD')) then
         Exit;
 
     mPairAlert := getPairByName(mContent[2]);
