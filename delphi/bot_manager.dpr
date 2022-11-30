@@ -18,7 +18,9 @@ uses
   AlertTypes in 'src\AlertTypes.pas',
   PIX in 'src\PIX.pas' {frmPIX},
   BotNotification in 'src\BotNotification.pas',
-  DoadoresDTO in 'src\DoadoresDTO.pas';
+  DoadoresDTO in 'src\DoadoresDTO.pas',
+  HighlightingConfig in 'src\HighlightingConfig.pas' {frmHighlighting},
+  HighlightingDTO in 'src\HighlightingDTO.pas';
 
 {$R *.res}
 

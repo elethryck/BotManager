@@ -389,7 +389,7 @@ object frmMain: TfrmMain
           Left = 1
           Top = 115
           Width = 563
-          Height = 421
+          Height = 230
           Cursor = crIBeam
           StyleElements = [seClient, seBorder]
           ActiveLineSettings.ShowActiveLine = True
@@ -397,7 +397,7 @@ object frmMain: TfrmMain
           ActiveLineSettings.ActiveLineColor = 1883444
           ActiveLineSettings.ActiveLineAtCursor = True
           ActiveLineSettings.ActiveLineTextColor = clWhite
-          Align = alClient
+          Align = alTop
           AutoCompletion.Font.Charset = DEFAULT_CHARSET
           AutoCompletion.Font.Color = clWindowText
           AutoCompletion.Font.Height = -11
@@ -695,11 +695,38 @@ object frmMain: TfrmMain
             OnClick = chkNoAlertsClick
           end
         end
+        object mmLog2: TAdvRichEditor
+          Left = 1
+          Top = 345
+          Width = 563
+          Height = 191
+          Cursor = crIBeam
+          HorzScrollBar.Tracking = True
+          VertScrollBar.Range = 6
+          VertScrollBar.Tracking = True
+          Align = alClient
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 10241328
+          Font.Height = -11
+          Font.Name = 'Courier New'
+          Font.Style = []
+          ReadOnly = True
+          TabOrder = 4
+          TabStop = True
+          HighlightColor = 1883444
+          ParentFont = False
+          Version = '1.8.3.2'
+          OnSelectionChanged = mmLog2SelectionChanged
+        end
       end
     end
     object tsDonates: TTabSheet
       Caption = '      DOA'#199#213'ES      '
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Loading: TAdvCircularProgress
         Left = 258
         Top = 293
@@ -10170,5 +10197,10 @@ object frmMain: TfrmMain
     Connection = DM.conexao
     Left = 960
     Top = 432
+  end
+  object cxStyleRepository1: TcxStyleRepository
+    Left = 765
+    Top = 424
+    PixelsPerInch = 96
   end
 end

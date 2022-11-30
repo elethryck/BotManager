@@ -20,9 +20,12 @@ type
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
+    FHighlightingFile: String;
     { Private declarations }
   public
     { Public declarations }
+  published
+    property HighlightingFile: String read FHighlightingFile;
   end;
 
 var
@@ -39,6 +42,7 @@ var
     mSQL : String;
 begin
     conexao.Params.Database := ExtractFileDir(ParamStr(0)) + '\base.db';
+    FHighlightingFile       := ExtractFileDir(ParamStr(0)) + '\highlighting.cnf';
 
     conexao.Connected := True;
 

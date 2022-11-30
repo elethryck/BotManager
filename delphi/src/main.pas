@@ -17,7 +17,8 @@ uses
   AdvSearchList, AdvSearchEdit, AdvShapeButton, Vcl.Imaging.pngimage, AdvPanel,
   System.ImageList, Vcl.ImgList, PairAlertEntity, AdvGlowButton,
   Vcl.Imaging.jpeg, System.Notification, BotNotification, REST.Types,
-  REST.Client, Data.Bind.Components, Data.Bind.ObjectScope, AdvCircularProgress;
+  REST.Client, Data.Bind.Components, Data.Bind.ObjectScope, AdvCircularProgress,
+  cxClasses, cxStyles;
 
 type
 
@@ -101,6 +102,8 @@ type
     Panel2: TPanel;
     Label6: TLabel;
     btnFimLog: TAdvShapeButton;
+    mmLog2: TAdvRichEditor;
+    cxStyleRepository1: TcxStyleRepository;
     procedure FormCreate(Sender: TObject);
     procedure btnStartClick(Sender: TObject);
     procedure btnStopClick(Sender: TObject);
@@ -158,6 +161,7 @@ type
     procedure chkNoAlertsClick(Sender: TObject);
     procedure tmrDonatesTimer(Sender: TObject);
     procedure chkAutoScrollClick(Sender: TObject);
+    procedure mmLog2SelectionChanged(Sender: TObject);
   private
     { Private declarations }
 
@@ -266,6 +270,11 @@ end;
 procedure TfrmMain.ActivateALL1Click(Sender: TObject);
 begin
     setInactive(False);
+end;
+
+procedure TfrmMain.mmLog2SelectionChanged(Sender: TObject);
+begin
+    mmLog2.SetSelectionHighlight;
 end;
 
 procedure TfrmMain.btnFimLogClick(Sender: TObject);
@@ -398,7 +407,7 @@ begin
                     begin
                         mmConsole.Clear;
 
-                        mmCOnsole.Lines.Text := CRT;
+                        mmConsole.Lines.Text := CRT;
                         pnlPIX.Visible       := True;
                         mmConsole.Lines.Add('Bot is running...');
 
@@ -659,6 +668,7 @@ begin
 
     try
         mmLog.Lines.Clear;
+        mmLog2.Clear;
         mmLog.Lines.SaveToFile(FEncryptosBotPath + '\notification.log');
         mmLog.GotoBegin;
     except on E: Exception do
@@ -961,7 +971,6 @@ begin
     FCustomStyle.NumberStyle.BkColor    := clNone;
     FCustomStyle.NumberStyle.TextColor  := mmLog.Font.Color;
     FCustomStyle.NumberStyle.Style      := [];
-
 
     mmLog.SyntaxStyles := FCustomStyle;
 
@@ -1576,7 +1585,11 @@ begin
                             begin
                                 mLineContent := mFile.Strings[mLastLine];
                                 mmLog.Lines.Append( mLineContent );
+
                                 mLastLine    := mLastLine + 1;
+
+                                mmLog2.AddText( mLineContent , clGreen);
+                                mmLog2.AddLineBreak;
 
                                 Notificate(mLineContent);
                             end;

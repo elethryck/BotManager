@@ -1,0 +1,19 @@
+﻿  {
+    "items":[
+      {
+        "bold":false,
+        "color":"$000909FF",
+        "astring":"TRADE DOWN"
+      },
+      {
+        "bold":false,
+        "color":"clLime",
+        "astring":"TRADE UP"
+      },
+      {
+        "bold":false,
+        "color":"clAqua",
+        "astring":"X_"
+      }
+    ]
+  }
