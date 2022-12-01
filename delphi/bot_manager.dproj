@@ -4,7 +4,7 @@
         <ProjectVersion>19.1</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Application</AppType>
@@ -108,18 +108,18 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="src\main.pas">
+        <DCCReference Include="src\View\View.Principal.pas">
             <Form>frmMain</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="src\PairConfiguration.pas">
+        <DCCReference Include="src\View\Frame.PairConfiguration.pas">
             <Form>frmPairConfiguration</Form>
             <FormType>dfm</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
-        <DCCReference Include="src\Pkg.Json.DTO.pas"/>
-        <DCCReference Include="src\RootUnit.pas"/>
-        <DCCReference Include="src\PairAdd.pas">
+        <DCCReference Include="src\DTO\Pkg.Json.DTO.pas"/>
+        <DCCReference Include="src\DTO\BotConfigRootDTO.pas"/>
+        <DCCReference Include="src\View\View.PairAdd.pas">
             <Form>frmAddPair</Form>
         </DCCReference>
         <DCCReference Include="src\DataModulo.pas">
@@ -127,32 +127,26 @@
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="src\Rules.pas">
-            <Form>frmRules</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="src\PairAlertEntity.pas"/>
-        <DCCReference Include="src\RuleEntity.pas"/>
-        <DCCReference Include="src\ChangeLOG.pas">
+        <DCCReference Include="src\View\View.ChangeLOG.pas">
             <Form>frmChangeLog</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="src\KeyForm.pas">
+        <DCCReference Include="src\View\View.KeyForm.pas">
             <Form>frmKey</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="src\AlertTypes.pas"/>
-        <DCCReference Include="src\PIX.pas">
+        <DCCReference Include="src\View\View.PIX.pas">
             <Form>frmPIX</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="src\BotNotification.pas"/>
-        <DCCReference Include="src\DoadoresDTO.pas"/>
-        <DCCReference Include="src\HighlightingConfig.pas">
+        <DCCReference Include="src\Resource\Resource.BotNotification.pas"/>
+        <DCCReference Include="src\DTO\DoadoresDTO.pas"/>
+        <DCCReference Include="src\View\View.HighlightingConfig.pas">
             <Form>frmHighlighting</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="src\HighlightingDTO.pas"/>
+        <DCCReference Include="src\DTO\HighlightingDTO.pas"/>
+        <DCCReference Include="src\Repository\HighlightingRepository.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

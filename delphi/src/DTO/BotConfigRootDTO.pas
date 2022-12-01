@@ -1,4 +1,4 @@
-unit RootUnit;
+unit BotConfigRootDTO;
 
 interface
 
@@ -33,7 +33,7 @@ type
     property Up: Boolean read FUp write FUp;
   end;
   
-  TItems = class(TJsonDTO)
+  TUnitDTO = class(TJsonDTO)
   private
     [JSONMarshalledAttribute(False)]
     FInactive : Boolean;
@@ -62,18 +62,18 @@ type
     destructor Destroy; override;
   end;
   
-  TRoot = class(TJsonDTO)
+  TBotConfigRootDTO = class(TJsonDTO)
   private
     [JSONName('Items'), JSONMarshalled(False)]
-    FItemsArray: TArray<TItems>;
+    FItemsArray: TArray<TUnitDTO>;
     [GenericListReflect]
-    FItems: TObjectList<TItems>;
-    function GetItems: TObjectList<TItems>;
+    FItems: TObjectList<TUnitDTO>;
+    function GetItems: TObjectList<TUnitDTO>;
   protected
     function GetAsJson: string; override;
   published
-    property Items: TObjectList<TItems> read GetItems;
-    property ArrayItems : TArray<TItems> read FItemsArray;
+    property Items: TObjectList<TUnitDTO> read GetItems;
+    property ArrayItems : TArray<TUnitDTO> read FItemsArray;
   public
     destructor Destroy; override;
   end;
@@ -82,14 +82,14 @@ implementation
 
 { TItems }
 
-constructor TItems.Create;
+constructor TUnitDTO.Create;
 begin
   inherited;
   FTradeForce := TTradeForce.Create;
   FLongShortRatio := TLongShortRatio.Create;
 end;
 
-destructor TItems.Destroy;
+destructor TUnitDTO.Destroy;
 begin
   FTradeForce.Free;
   FLongShortRatio.Free;
@@ -97,12 +97,12 @@ begin
   inherited;
 end;
 
-function TItems.GetInterval: TList<string>;
+function TUnitDTO.GetInterval: TList<string>;
 begin
   Result := List<string>(FInterval, FIntervalArray);
 end;
 
-function TItems.GetAsJson: string;
+function TUnitDTO.GetAsJson: string;
 begin
   RefreshArray<string>(FInterval, FIntervalArray);
   Result := inherited;
@@ -110,20 +110,20 @@ end;
 
 { TRoot }
 
-destructor TRoot.Destroy;
+destructor TBotConfigRootDTO.Destroy;
 begin
   GetItems.Free;
   inherited;
 end;
 
-function TRoot.GetItems: TObjectList<TItems>;
+function TBotConfigRootDTO.GetItems: TObjectList<TUnitDTO>;
 begin
-  Result := ObjectList<TItems>(FItems, FItemsArray);
+  Result := ObjectList<TUnitDTO>(FItems, FItemsArray);
 end;
 
-function TRoot.GetAsJson: string;
+function TBotConfigRootDTO.GetAsJson: string;
 begin
-  RefreshArray<TItems>(FItems, FItemsArray);
+  RefreshArray<TUnitDTO>(FItems, FItemsArray);
   Result := inherited;
 end;
 

@@ -14,6 +14,7 @@ object frmHighlighting: TfrmHighlighting
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poMainFormCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   PixelsPerInch = 96
@@ -617,7 +618,7 @@ object frmHighlighting: TfrmHighlighting
       TabOrder = 2
       OnClick = btnCloseClick
     end
-    object cxButton1: TcxButton
+    object btnSave: TcxButton
       Left = 148
       Top = 447
       Width = 118
@@ -648,7 +649,7 @@ object frmHighlighting: TfrmHighlighting
         0A}
       OptionsImage.Spacing = 0
       TabOrder = 3
-      OnClick = cxButton1Click
+      OnClick = btnSaveClick
     end
   end
 end

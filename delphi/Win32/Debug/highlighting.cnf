@@ -14,6 +14,16 @@
         "bold":false,
         "color":"clAqua",
         "astring":"X_"
+      },
+      {
+        "bold":false,
+        "color":"$00999999",
+        "astring":"L\/S"
+      },
+      {
+        "bold":false,
+        "color":"clFuchsia",
+        "astring":"BTCUSDT"
       }
     ]
   }

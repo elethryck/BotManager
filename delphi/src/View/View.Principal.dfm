@@ -365,265 +365,15 @@ object frmMain: TfrmMain
             TabOrder = 1
             OnClick = BitBtn2Click
           end
-          object Button1: TButton
-            Left = 349
-            Top = 6
-            Width = 75
-            Height = 25
-            Caption = 'Button1'
-            TabOrder = 2
-            Visible = False
-            OnClick = Button1Click
-          end
           object chkAutoScroll: TCheckBox
             Left = 127
             Top = 12
             Width = 170
             Height = 17
             Caption = 'Desativar Rolagem Autom'#225'tica'
-            TabOrder = 3
+            TabOrder = 2
             OnClick = chkAutoScrollClick
           end
-        end
-        object mmLog: TAdvMemo
-          Left = 1
-          Top = 115
-          Width = 563
-          Height = 230
-          Cursor = crIBeam
-          StyleElements = [seClient, seBorder]
-          ActiveLineSettings.ShowActiveLine = True
-          ActiveLineSettings.ShowActiveLineIndicator = False
-          ActiveLineSettings.ActiveLineColor = 1883444
-          ActiveLineSettings.ActiveLineAtCursor = True
-          ActiveLineSettings.ActiveLineTextColor = clWhite
-          Align = alTop
-          AutoCompletion.Font.Charset = DEFAULT_CHARSET
-          AutoCompletion.Font.Color = clWindowText
-          AutoCompletion.Font.Height = -11
-          AutoCompletion.Font.Name = 'Tahoma'
-          AutoCompletion.Font.Style = []
-          AutoCompletion.StartToken = '(.'
-          AutoCorrect.Active = True
-          AutoHintParameterPosition = hpBelowCode
-          BlockLineColor = 1883444
-          BookmarkGlyph.Data = {
-            36050000424D3605000000000000360400002800000010000000100000000100
-            0800000000000001000000000000000000000001000000000000000000000000
-            80000080000000808000800000008000800080800000C0C0C000C0DCC000F0CA
-            A6000020400000206000002080000020A0000020C0000020E000004000000040
-            20000040400000406000004080000040A0000040C0000040E000006000000060
-            20000060400000606000006080000060A0000060C0000060E000008000000080
-            20000080400000806000008080000080A0000080C0000080E00000A0000000A0
-            200000A0400000A0600000A0800000A0A00000A0C00000A0E00000C0000000C0
-            200000C0400000C0600000C0800000C0A00000C0C00000C0E00000E0000000E0
-            200000E0400000E0600000E0800000E0A00000E0C00000E0E000400000004000
-            20004000400040006000400080004000A0004000C0004000E000402000004020
-            20004020400040206000402080004020A0004020C0004020E000404000004040
-            20004040400040406000404080004040A0004040C0004040E000406000004060
-            20004060400040606000406080004060A0004060C0004060E000408000004080
-            20004080400040806000408080004080A0004080C0004080E00040A0000040A0
-            200040A0400040A0600040A0800040A0A00040A0C00040A0E00040C0000040C0
-            200040C0400040C0600040C0800040C0A00040C0C00040C0E00040E0000040E0
-            200040E0400040E0600040E0800040E0A00040E0C00040E0E000800000008000
-            20008000400080006000800080008000A0008000C0008000E000802000008020
-            20008020400080206000802080008020A0008020C0008020E000804000008040
-            20008040400080406000804080008040A0008040C0008040E000806000008060
-            20008060400080606000806080008060A0008060C0008060E000808000008080
-            20008080400080806000808080008080A0008080C0008080E00080A0000080A0
-            200080A0400080A0600080A0800080A0A00080A0C00080A0E00080C0000080C0
-            200080C0400080C0600080C0800080C0A00080C0C00080C0E00080E0000080E0
-            200080E0400080E0600080E0800080E0A00080E0C00080E0E000C0000000C000
-            2000C0004000C0006000C0008000C000A000C000C000C000E000C0200000C020
-            2000C0204000C0206000C0208000C020A000C020C000C020E000C0400000C040
-            2000C0404000C0406000C0408000C040A000C040C000C040E000C0600000C060
-            2000C0604000C0606000C0608000C060A000C060C000C060E000C0800000C080
-            2000C0804000C0806000C0808000C080A000C080C000C080E000C0A00000C0A0
-            2000C0A04000C0A06000C0A08000C0A0A000C0A0C000C0A0E000C0C00000C0C0
-            2000C0C04000C0C06000C0C08000C0C0A000F0FBFF00A4A0A000808080000000
-            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FDFD25252525
-            2525252525252525FDFDFD2E25FFFFFFFFFFFFFFFFFFFF25FDFDFD2525252525
-            2525252525252525FDFD9A9AB7B7B7B7B7B7B7B7B7B72525FDFDFD25B7B7B7B7
-            B7B7B7B7B7B72525FDFD9A9AB7B7B7B7B7B7B7B7B7B72525FDFDFD25BFB7BFBF
-            B7B7B7B7B7B72525FDFD9A9ABFBFBFB7BFBFB7B7B7B72525FDFDFD25BFBFBFBF
-            BFB7BFBFB7B72525FDFD9A9ABFBFBFB7BFBFBFB7BFB72525FDFDFD25BFBFBFBF
-            BFBFBFBFBFB72525FDFD9A9ABFBFBFBFBFB7BFBFB7B72525FDFDFD25BFBFBFBF
-            BFBFBFBFBFB72525FDFD9A9ABFBFBFBFBFBFBFBFBFB725FDFDFDFD2525252525
-            25252525252525FDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFD}
-          BorderColor = 11250603
-          BorderStyle = bsSingle
-          ClipboardFormats = [cfText]
-          CodeFolding.Enabled = False
-          CodeFolding.LineColor = clGray
-          Ctl3D = False
-          DelErase = True
-          EnhancedHomeKey = False
-          Gutter.Font.Charset = DEFAULT_CHARSET
-          Gutter.Font.Color = clWindowText
-          Gutter.Font.Height = -13
-          Gutter.Font.Name = 'Courier New'
-          Gutter.Font.Style = []
-          Gutter.BorderColor = 11250603
-          Gutter.GutterColor = 15066597
-          Gutter.GutterColorTo = 15066597
-          Gutter.LineNumberTextColor = 3881787
-          Gutter.ModifiedColor = clSkyBlue
-          Font.Charset = ANSI_CHARSET
-          Font.Color = 10241328
-          Font.Height = -13
-          Font.Name = 'Courier New'
-          Font.Style = []
-          HiddenCaret = False
-          Lines.Strings = (
-            '09/04/2022 14:26:59 DASHUSDT Trade UP 5m 113.7 Level: 3'
-            '09/04/2022 14:27:10 GALAUSDT L/S Ratio DOWN 6.77'
-            '09/04/2022 14:27:12 BTCUSDT L/S Ratio DOWN 2.51'
-            '09/04/2022 14:27:16 ALGOUSDT L/S Ratio DOWN 5.32'
-            '09/04/2022 14:27:22 1INCHUSDT L/S Ratio DOWN 6.34'
-            '09/04/2022 14:28:17 DASHUSDT L/S Ratio UP 2.84'
-            '09/04/2022 14:28:29 MKRUSDT L/S Ratio DOWN 1.46'
-            '09/04/2022 14:29:13 BNBUSDT L/S Ratio UP 2.54'
-            '09/04/2022 14:29:16 OGNUSDT L/S Ratio UP 1.49'
-            '09/04/2022 14:29:18 OGNUSDT Trade UP 15m 0.5706 Level: 6 18X'
-            '09/04/2022 14:30:00 MTLUSDT Trade UP 5m 1.729 Level: 6'
-            '09/04/2022 14:30:00 RAYUSDT L/S Ratio UP 4'
-            '09/04/2022 14:30:52 MTLUSDT Trade UP 5m 1.735 Level: 3'
-            '09/04/2022 14:31:12 ETCUSDT L/S Ratio UP 1.78'
-            '09/04/2022 14:31:16 SKLUSDT L/S Ratio DOWN 3.21'
-            '09/04/2022 14:31:18 OGNUSDT Trade UP 5m 0.5759 Level: 3'
-            '09/04/2022 14:31:39 SRMUSDT L/S Ratio UP 3.73'
-            '09/04/2022 14:31:49 STORJUSDT Trade UP 5m 1.1534 Level: 3'
-            '09/04/2022 14:31:49 MTLUSDT Trade UP 5m 1.734 Level: 5'
-            '09/04/2022 14:31:56 OGNUSDT Trade UP 5m 0.5793 Level: 5'
-            '09/04/2022 14:31:59 SUSHIUSDT L/S Ratio UP 3.91'
-            '09/04/2022 14:32:06 SUSHIUSDT Trade UP 5m 3.539 Level: 3'
-            '09/04/2022 14:32:09 MKRUSDT Trade UP 5m 2080 Level: 3'
-            '09/04/2022 14:32:11 ALGOUSDT L/S Ratio DOWN 5.31'
-            '09/04/2022 14:32:11 1INCHUSDT L/S Ratio DOWN 6.24'
-            '09/04/2022 14:32:11 DOGEUSDT L/S Ratio DOWN 3.96'
-            '09/04/2022 14:32:11 GALAUSDT L/S Ratio DOWN 6.73'
-            '09/04/2022 14:32:11 AAVEUSDT L/S Ratio DOWN 2.24'
-            '09/04/2022 14:32:13 BTCUSDT L/S Ratio DOWN 2.51'
-            '09/04/2022 14:32:16 OGNUSDT Trade UP 15m 0.5795 Level: 3'
-            '09/04/2022 14:32:39 TRXUSDT L/S Ratio UP 3.34'
-            '09/04/2022 14:32:51 ETHUSDT Trade UP 5m 3245.42 Level: 3'
-            '09/04/2022 14:32:54 OGNUSDT Trade UP 5m 0.575 Level: 6 10X'
-            '09/04/2022 14:32:55 UNIUSDT L/S Ratio DOWN 2.9'
-            '09/04/2022 14:33:12 UNIUSDT L/S Ratio DOWN 2.89'
-            '09/04/2022 14:33:14 SRMUSDT L/S Ratio UP 3.71'
-            '09/04/2022 14:33:14 BATUSDT L/S Ratio UP 2.6'
-            '09/04/2022 14:33:19 SCUSDT Trade UP 5m 0.01118 Level: 3'
-            '09/04/2022 14:33:27 XLMUSDT L/S Ratio UP 2.51'
-            '09/04/2022 14:33:46 XRPUSDT L/S Ratio DOWN 3.77'
-            '09/04/2022 14:34:03 OGNUSDT Trade UP 15m 0.5749 Level: 5'
-            '09/04/2022 14:34:11 BNBUSDT L/S Ratio UP 2.54'
-            '09/04/2022 14:34:28 RAYUSDT L/S Ratio UP 4.05'
-            '09/04/2022 14:34:34 RVNUSDT Trade UP 5m 0.05992 Level: 3'
-            '09/04/2022 14:34:39 YFIUSDT Trade UP 5m 20505.57 Level: 3'
-            '09/04/2022 14:34:48 BTCUSDT L/S Ratio DOWN 2.51'
-            '09/04/2022 14:34:57 ETHUSDT L/S Ratio DOWN 1.38'
-            '09/04/2022 14:35:04 1INCHUSDT L/S Ratio DOWN 6.24'
-            '09/04/2022 14:35:15 AAVEUSDT L/S Ratio DOWN 2.24'
-            '09/04/2022 14:35:30 ALGOUSDT L/S Ratio DOWN 5.31'
-            '09/04/2022 14:36:45 BTCUSDT L/S Ratio DOWN 2.5'
-            '09/04/2022 14:36:45 AAVEUSDT L/S Ratio DOWN 2.25'
-            '09/04/2022 14:38:39 BTCUSDT L/S Ratio DOWN 2.5'
-            '09/04/2022 14:39:08 BTCUSDT L/S Ratio DOWN 2.5'
-            '09/04/2022 14:39:14 ETHUSDT L/S Ratio DOWN 1.38'
-            '09/04/2022 14:39:27 1INCHUSDT L/S Ratio DOWN 6.19'
-            '09/04/2022 14:46:05 ETHUSDT L/S Ratio DOWN 1.38'
-            '09/04/2022 14:46:19 1INCHUSDT L/S Ratio DOWN 6.09'
-            '09/04/2022 14:46:19 AAVEUSDT L/S Ratio DOWN 2.19'
-            '09/04/2022 14:46:40 ALGOUSDT L/S Ratio DOWN 5.21'
-            '09/04/2022 14:47:51 ETHUSDT L/S Ratio DOWN 1.38'
-            '09/04/2022 14:48:05 AAVEUSDT L/S Ratio DOWN 2.19'
-            '09/04/2022 14:48:15 1INCHUSDT L/S Ratio DOWN 6.05'
-            '09/04/2022 14:48:24 ALGOUSDT L/S Ratio DOWN 5.21'
-            '09/04/2022 14:50:36 BNBUSDT L/S Ratio UP 2.56'
-            '09/04/2022 14:50:43 ARUSDT L/S Ratio UP 1.74'
-            '09/04/2022 14:51:42 AAVEUSDT L/S Ratio DOWN 2.17'
-            '09/04/2022 14:51:49 1INCHUSDT L/S Ratio DOWN 6.02'
-            '09/04/2022 14:52:51 ALGOUSDT L/S Ratio DOWN 5.21'
-            '09/04/2022 14:53:32 ETCUSDT L/S Ratio UP 1.79'
-            '09/04/2022 14:53:41 BNBUSDT L/S Ratio UP 2.56'
-            '09/04/2022 14:54:03 GALAUSDT L/S Ratio DOWN 6.57'
-            '09/04/2022 14:55:23 KAVAUSDT L/S Ratio UP 2'
-            '09/04/2022 14:57:48 OGNUSDT Trade UP 5m 0.6042 Level: 6 12X'
-            '09/04/2022 14:57:51 MTLUSDT Trade UP 5m 1.748 Level: 3'
-            '09/04/2022 14:57:52 OGNUSDT Trade UP 15m 0.6027 Level: 6 22X'
-            '09/04/2022 14:57:54 OGNUSDT Trade UP 1h 0.602 Level: 5'
-            '09/04/2022 14:57:56 OGNUSDT Trade UP 4h 0.6016 Level: 3'
-            '09/04/2022 14:59:41 BNBUSDT L/S Ratio UP 2.56'
-            '09/04/2022 15:00:15 SRMUSDT L/S Ratio UP 3.77'
-            '09/04/2022 15:00:43 SUSHIUSDT L/S Ratio UP 3.93'
-            '09/04/2022 15:00:45 ETCUSDT L/S Ratio UP 1.8'
-            '09/04/2022 15:01:01 TLMUSDT L/S Ratio UP 5.96'
-            '09/04/2022 15:01:03 TOMOUSDT L/S Ratio UP 2.67'
-            '09/04/2022 15:01:13 TRXUSDT L/S Ratio UP 3.39'
-            '09/04/2022 15:01:32 UNIUSDT L/S Ratio DOWN 2.83'
-            '09/04/2022 15:01:41 ARUSDT L/S Ratio UP 1.73'
-            '09/04/2022 15:01:42 TOMOUSDT L/S Ratio UP 2.67'
-            '09/04/2022 15:01:42 GALAUSDT L/S Ratio DOWN 6.56'
-            '09/04/2022 15:01:45 BTCUSDT L/S Ratio DOWN 2.49'
-            '09/04/2022 15:01:50 1INCHUSDT L/S Ratio DOWN 6.01'
-            '09/04/2022 15:01:56 AAVEUSDT L/S Ratio DOWN 2.17'
-            '09/04/2022 15:02:10 XLMUSDT L/S Ratio UP 2.52'
-            '09/04/2022 15:02:19 OGNUSDT Trade UP 5m 0.6016 Level: 5 9X'
-            '09/04/2022 15:02:19 OGNUSDT Trade UP 15m 0.6016 Level: 3'
-            '09/04/2022 15:02:41 ENJUSDT Trade UP 5m 1.815 Level: 3'
-            '09/04/2022 15:02:41 LITUSDT L/S Ratio UP 5.85'
-            '09/04/2022 15:02:42 EGLDUSDT L/S Ratio UP 3.7'
-            '09/04/2022 15:02:42 RUNEUSDT L/S Ratio DOWN 2.48'
-            '09/04/2022 15:02:43 TRXUSDT L/S Ratio UP 3.39'
-            '09/04/2022 15:02:43 KAVAUSDT L/S Ratio UP 2.01'
-            '09/04/2022 15:02:45 OGNUSDT Trade UP 5m 0.5982 Level: 6 11X'
-            '09/04/2022 15:02:46 MATICUSDT L/S Ratio UP 4.59'
-            '09/04/2022 15:03:00 IOTXUSDT L/S Ratio DOWN 4.49'
-            '09/04/2022 15:03:12 YFIUSDT L/S Ratio UP 2.95'
-            '09/04/2022 15:03:15 CHRUSDT Trade UP 5m 0.5051 Level: 3'
-            '09/04/2022 15:45:38 1INCHUSDT L/S Ratio DOWN 5.9'
-            '09/04/2022 16:15:54 1INCHUSDT L/S Ratio DOWN 5.87'
-            '09/04/2022 16:16:01 AAVEUSDT L/S Ratio DOWN 2.11'
-            '09/04/2022 16:24:56 ANKRUSDT L/S Ratio DOWN 3.28'
-            '09/04/2022 16:25:14 AUDIOUSDT L/S Ratio UP 3.33'
-            '09/04/2022 16:25:16 ATOMUSDT L/S Ratio UP 5.27'
-            '09/04/2022 16:30:26 ALPHAUSDT L/S Ratio UP 4.53')
-          MarkerList.UseDefaultMarkerImageIndex = False
-          MarkerList.DefaultMarkerImageIndex = -1
-          MarkerList.ImageTransparentColor = 33554432
-          OleDropTarget = []
-          PrintOptions.MarginLeft = 0
-          PrintOptions.MarginRight = 0
-          PrintOptions.MarginTop = 0
-          PrintOptions.MarginBottom = 0
-          PrintOptions.PageNr = False
-          PrintOptions.PrintLineNumbers = False
-          ReadOnly = True
-          RightMarginColor = 14869218
-          ScrollHint = False
-          SelColor = clWhite
-          SelBkColor = -12372171
-          ShowRightMargin = True
-          SmartTabs = False
-          TabOrder = 2
-          TabStop = True
-          TrimTrailingSpaces = False
-          UILanguage.ScrollHint = 'Row'
-          UILanguage.Undo = 'Undo'
-          UILanguage.Redo = 'Redo'
-          UILanguage.Copy = 'Copy'
-          UILanguage.Cut = 'Cut'
-          UILanguage.Paste = 'Paste'
-          UILanguage.Delete = 'Delete'
-          UILanguage.SelectAll = 'Select All'
-          UrlStyle.TextColor = clBlue
-          UrlStyle.BkColor = clWhite
-          UrlStyle.Style = [fsUnderline]
-          UseStyler = True
-          Version = '3.7.4.8'
-          WordWrap = wwNone
-          OnCursorChange = mmLogCursorChange
-          OnSelectionChange = mmLogSelectionChange
         end
         object pnlLogConfig: TPanel
           Left = 1
@@ -632,7 +382,7 @@ object frmMain: TfrmMain
           Height = 73
           Align = alTop
           BevelOuter = bvNone
-          TabOrder = 3
+          TabOrder = 2
           object Bevel4: TBevel
             Left = 0
             Top = 0
@@ -695,38 +445,37 @@ object frmMain: TfrmMain
             OnClick = chkNoAlertsClick
           end
         end
-        object mmLog2: TAdvRichEditor
+        object mmLog: TAdvRichEditor
           Left = 1
-          Top = 345
+          Top = 115
           Width = 563
-          Height = 191
+          Height = 421
           Cursor = crIBeam
           HorzScrollBar.Tracking = True
-          VertScrollBar.Range = 6
+          VertScrollBar.Range = 1
+          VertScrollBar.Smooth = True
+          VertScrollBar.Style = ssHotTrack
           VertScrollBar.Tracking = True
           Align = alClient
           Font.Charset = DEFAULT_CHARSET
           Font.Color = 10241328
-          Font.Height = -11
+          Font.Height = -13
           Font.Name = 'Courier New'
           Font.Style = []
           ReadOnly = True
-          TabOrder = 4
+          TabOrder = 3
           TabStop = True
           HighlightColor = 1883444
           ParentFont = False
           Version = '1.8.3.2'
-          OnSelectionChanged = mmLog2SelectionChanged
+          ExplicitTop = 345
+          ExplicitHeight = 191
         end
       end
     end
     object tsDonates: TTabSheet
       Caption = '      DOA'#199#213'ES      '
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Loading: TAdvCircularProgress
         Left = 258
         Top = 293
@@ -998,24 +747,6 @@ object frmMain: TfrmMain
       ScrollBars = ssVertical
       TabOrder = 2
     end
-    object btnStart: TBitBtn
-      Left = 437
-      Top = 324
-      Width = 99
-      Height = 25
-      Caption = 'Iniciar BOT'
-      TabOrder = 3
-      OnClick = btnStartClick
-    end
-    object btnStop: TBitBtn
-      Left = 332
-      Top = 324
-      Width = 99
-      Height = 25
-      Caption = 'Parar BOT'
-      TabOrder = 4
-      OnClick = btnStopClick
-    end
     object btnCopyToAll: TBitBtn
       Left = 239
       Top = 290
@@ -1024,7 +755,7 @@ object frmMain: TfrmMain
       Caption = 'Copiar configura'#231#227'o para todos os Pares'
       Kind = bkAll
       NumGlyphs = 2
-      TabOrder = 5
+      TabOrder = 3
       OnClick = btnCopyToAllClick
     end
     object edtLocate: TSearchBox
@@ -1032,7 +763,7 @@ object frmMain: TfrmMain
       Top = 19
       Width = 202
       Height = 21
-      TabOrder = 6
+      TabOrder = 4
       TextHint = 'Procurar ( F4 )'
       OnChange = edtLocateChange
       OnKeyDown = edtLocateKeyDown
@@ -1051,7 +782,7 @@ object frmMain: TfrmMain
         'Ativos'
         'Inativos'
         'Todos')
-      TabOrder = 7
+      TabOrder = 5
       OnClick = rgFilterClick
     end
     object pnlPIX: TPanel
@@ -1061,7 +792,7 @@ object frmMain: TfrmMain
       Height = 42
       Cursor = crHandPoint
       AutoSize = True
-      TabOrder = 8
+      TabOrder = 6
       object Image1: TImage
         Left = 1
         Top = 1
@@ -4552,10 +4283,32 @@ object frmMain: TfrmMain
         OnClick = Image1Click
       end
     end
+    object btnStart: TBitBtn
+      Left = 417
+      Top = 324
+      Width = 114
+      Height = 25
+      Caption = 'IniciarBOT'
+      ModalResult = 1
+      NumGlyphs = 2
+      TabOrder = 7
+      OnClick = btnStartClick
+    end
+    object btnStop: TBitBtn
+      Left = 297
+      Top = 324
+      Width = 114
+      Height = 25
+      Caption = 'Parar BOT'
+      ModalResult = 3
+      NumGlyphs = 2
+      TabOrder = 8
+      OnClick = btnStopClick
+    end
   end
   object pnlPathConfig: TPanel
-    Left = 170
-    Top = 224
+    Left = 159
+    Top = 190
     Width = 807
     Height = 94
     Color = clMoneyGreen
@@ -4675,6 +4428,13 @@ object frmMain: TfrmMain
       object Close1: TMenuItem
         Caption = 'Fechar'
         OnClick = Close1Click
+      end
+    end
+    object Configurao1: TMenuItem
+      Caption = 'Configura'#231#227'o'
+      object LogHighlighting1: TMenuItem
+        Caption = 'Log Highlighting'
+        OnClick = LogHighlighting1Click
       end
     end
     object About1: TMenuItem
@@ -10197,10 +9957,5 @@ object frmMain: TfrmMain
     Connection = DM.conexao
     Left = 960
     Top = 432
-  end
-  object cxStyleRepository1: TcxStyleRepository
-    Left = 765
-    Top = 424
-    PixelsPerInch = 96
   end
 end

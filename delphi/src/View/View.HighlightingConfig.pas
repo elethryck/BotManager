@@ -1,4 +1,4 @@
-unit HighlightingConfig;
+unit View.HighlightingConfig;
 
 interface
 
@@ -10,7 +10,7 @@ uses
   cxLookAndFeelPainters, Vcl.Menus, Vcl.DBCGrids, Vcl.StdCtrls, cxButtons,
   Vcl.ComCtrls, HighlightingDTO, Vcl.Mask, AdvDropDown, AdvColorPickerDropDown,
   cxControls, cxContainer, cxEdit, dxCore, cxTextEdit, cxMaskEdit,
-  cxDropDownEdit, dxColorEdit, dxDBColorEdit;
+  cxDropDownEdit, dxColorEdit, dxDBColorEdit, HighlightingRepository;
 
 type
   TfrmHighlighting = class(TForm)
@@ -24,7 +24,7 @@ type
     btnMoveDown: TcxButton;
     btnDel: TcxButton;
     btnClose: TcxButton;
-    cxButton1: TcxButton;
+    btnSave: TcxButton;
     lvDados: TListView;
     procedure btnAddClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -36,7 +36,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure edtStringChange(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure cxButton1Click(Sender: TObject);
+    procedure btnSaveClick(Sender: TObject);
     procedure btnMoveUPClick(Sender: TObject);
     procedure btnMoveDownClick(Sender: TObject);
   private
@@ -44,7 +44,7 @@ type
     FHighlightingRoot : THighlightingRootDTO;
     HighlightingFile: string;
 
-    function getHighlightingFile() : TStringList;
+    FHighlightingRepository : THighlightingRepository;
 
     procedure MoveItem(pItem : TListItem; pBy : Integer);
   public
@@ -86,17 +86,11 @@ begin
     MoveItem(lvDados.Selected, -1);
 end;
 
-procedure TfrmHighlighting.cxButton1Click(Sender: TObject);
+procedure TfrmHighlighting.btnSaveClick(Sender: TObject);
 var
-    mConfig : TStringList;
-
     mItem : TItemsDTO;
   I: Integer;
 begin
-    mConfig := getHighlightingFile();
-
-    mConfig.Clear;
-
     FHighlightingRoot.Items.Clear;
 
     try
@@ -112,16 +106,15 @@ begin
             end;
 
             FHighlightingRoot.Items.Add(mItem);
-
         end;
 
-        mConfig.Text := FHighlightingRoot.PrettyPrintJSON(FHighlightingRoot.AsJson);
-        mConfig.SaveToFile(DM.HighlightingFile, TEncoding.UTF8);
-    finally
-        mConfig.Free;
+        if FHighlightingRepository.Save(FHighlightingRoot) then
+            ModalResult := mrOK;
+    except
+        Exit;
     end;
 
-    ModalResult := mrOK;
+
 end;
 
 procedure TfrmHighlighting.edtStringChange(Sender: TObject);
@@ -131,45 +124,28 @@ end;
 
 procedure TfrmHighlighting.FormCreate(Sender: TObject);
 var
-    mConfig : TStringList;
   I: Integer;
   mItemDTO : TItemsDTO;
   mColor : TColor;
 begin
-    FHighlightingRoot := THighlightingRootDTO.Create;
+    FHighlightingRepository := THighlightingRepository.Create();
 
-    mConfig := getHighlightingFile();
+    FHighlightingRoot := FHighlightingRepository.getRootDTO();
 
-    if mConfig = nil then
-        Exit;
-
-    try
-        FHighlightingRoot.AsJson := mConfig.Text;
-
-        for mItemDTO in FHighlightingRoot.Items.ToArray do
-        begin
-            try
-                lvDados.AddItem(mItemDTO.AString, TObject(StringToColor(mItemDTO.Color) ));
-            except
-            end;
+    for mItemDTO in FHighlightingRoot.Items.ToArray do
+    begin
+        try
+            lvDados.AddItem(mItemDTO.AString, TObject(StringToColor(mItemDTO.Color) ));
+        except
         end;
-    finally
-        mConfig.Free;
     end;
+
 end;
 
 procedure TfrmHighlighting.FormDestroy(Sender: TObject);
 begin
     FHighlightingRoot.Free;
-end;
-
-function TfrmHighlighting.getHighlightingFile: TStringList;
-
-begin
-    Result := TStringList.Create;
-
-    if FileExists(DM.HighlightingFile) then
-        Result.LoadFromFile(DM.HighlightingFile);
+    FHighlightingRepository.Free;
 end;
 
 procedure TfrmHighlighting.lvDadosCustomDrawItem(Sender: TCustomListView;

@@ -1,4 +1,4 @@
-unit BotNotification;
+unit Resource.BotNotification;
 
 interface
 
@@ -15,9 +15,6 @@ implementation
 
 uses
   System.Classes;
-
-
-{ TBotNotification }
 
 
 { TBotNotification }
@@ -67,3 +64,4 @@ begin
 end;
 
 end.
+

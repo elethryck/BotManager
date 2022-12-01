@@ -22,10 +22,6 @@ object frmPIX: TfrmPIX
     Height = 401
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 8
-    ExplicitTop = 80
-    ExplicitWidth = 185
-    ExplicitHeight = 41
     object Image1: TImage
       Left = 137
       Top = 49

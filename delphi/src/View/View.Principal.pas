@@ -1,24 +1,26 @@
-unit main;
+unit View.Principal;
 
 interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Threading, ShellApi, RootUnit,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Threading, ShellApi, BotConfigRootDTO,
   Vcl.WinXCtrls, Vcl.ComCtrls, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.VCLUI.Wait,
   FireDAC.Stan.ExprFuncs, FireDAC.Phys.SQLiteWrapper.Stat,
   FireDAC.Phys.SQLiteDef, FireDAC.Phys.SQLite, FireDAC.Comp.Client, Data.DB,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, Vcl.Grids,
-  Vcl.DBGrids, FireDAC.Comp.DataSet, PairConfiguration, Vcl.Menus, Vcl.Buttons, IniFiles,
+  Vcl.DBGrids, FireDAC.Comp.DataSet, Frame.PairConfiguration, Vcl.Menus, Vcl.Buttons, IniFiles,
   AeroButtons, Vcl.AppEvnts, AdvScrollControl, AdvRichEditorBase, AdvRichEditor,
   AdvMemo, AdvMemoStylerManager, AdvmPS, AdvmWS, AdvCodeList, AdvmCSS, Advmxml,
   AdvSearchList, AdvSearchEdit, AdvShapeButton, Vcl.Imaging.pngimage, AdvPanel,
-  System.ImageList, Vcl.ImgList, PairAlertEntity, AdvGlowButton,
-  Vcl.Imaging.jpeg, System.Notification, BotNotification, REST.Types,
+  System.ImageList, Vcl.ImgList, AdvGlowButton,
+  Vcl.Imaging.jpeg, System.Notification, Resource.BotNotification, REST.Types,
   REST.Client, Data.Bind.Components, Data.Bind.ObjectScope, AdvCircularProgress,
-  cxClasses, cxStyles;
+  cxClasses, cxStyles, HighlightingDTO, dxSkinsCore, dxSkinOffice2013DarkGray,
+  dxSkinVisualStudio2013Light, cxGraphics, cxLookAndFeels,
+  cxLookAndFeelPainters, cxButtons;
 
 type
 
@@ -45,8 +47,6 @@ type
     ActivateALL1: TMenuItem;
     ActivateALL2: TMenuItem;
     InactivateALL1: TMenuItem;
-    btnStart: TBitBtn;
-    btnStop: TBitBtn;
     btnCopyToAll: TBitBtn;
     openDialog: TOpenDialog;
     fOpenDlg: TFileOpenDialog;
@@ -80,8 +80,6 @@ type
     pnlLogBottom: TPanel;
     btnLogClear: TBitBtn;
     BitBtn2: TBitBtn;
-    Button1: TButton;
-    mmLog: TAdvMemo;
     pnlLogConfig: TPanel;
     Bevel4: TBevel;
     Label1: TLabel;
@@ -102,8 +100,11 @@ type
     Panel2: TPanel;
     Label6: TLabel;
     btnFimLog: TAdvShapeButton;
-    mmLog2: TAdvRichEditor;
-    cxStyleRepository1: TcxStyleRepository;
+    mmLog: TAdvRichEditor;
+    btnStart: TBitBtn;
+    btnStop: TBitBtn;
+    Configurao1: TMenuItem;
+    LogHighlighting1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure btnStartClick(Sender: TObject);
     procedure btnStopClick(Sender: TObject);
@@ -138,8 +139,6 @@ type
     procedure TrayIconDblClick(Sender: TObject);
     procedure Restaurar1Click(Sender: TObject);
     procedure tmrTitleTimer(Sender: TObject);
-    procedure mmLogSelectionChange(Sender: TObject);
-    procedure mmLogCursorChange(Sender: TObject);
     procedure edtLogSearchInvokeSearch(Sender: TObject);
     procedure edtLocateInvokeSearch(Sender: TObject);
     procedure edtLogSearchKeyUp(Sender: TObject; var Key: Word;
@@ -151,7 +150,6 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnLogExpandClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure btnFimLogClick(Sender: TObject);
     procedure Image1Click(Sender: TObject);
     procedure dbgDadosDblClick(Sender: TObject);
@@ -161,22 +159,22 @@ type
     procedure chkNoAlertsClick(Sender: TObject);
     procedure tmrDonatesTimer(Sender: TObject);
     procedure chkAutoScrollClick(Sender: TObject);
-    procedure mmLog2SelectionChanged(Sender: TObject);
+    procedure LogHighlighting1Click(Sender: TObject);
   private
     { Private declarations }
 
     FNotificationCenter : TBotNotificationCenter;
-    FActivePairs : TRoot;
+    FActivePairs : TBotConfigRootDTO;
 
     FFileMonitorTask : ITask;
     FBotStartTask    : ITask;
     FNodeMonitor     : ITask;
-    FSelectedItem    : TItems;
+    FSelectedItem    : TUnitDTO;
     FLocating    : Boolean;
     FMonitoring  : Boolean;
     FLogClear    : Boolean;
     FNodeProcess : TProcessInformation;
-    FConfigFile  : TRoot;
+    FConfigFile  : TBotConfigRootDTO;
     FGridFocused : Boolean;
 
     FStopped   : Boolean;
@@ -188,9 +186,11 @@ type
 
     FCustomStyle : TAdvCustomMemoStyler;
 
-    FALerts : TPairList;
+    FHightlightingDTO : THighlightingRootDTO;
 
     procedure ToggleInactive();
+
+    procedure RecarregarHighlightingConfig;
 
     procedure LogFinder();
     procedure onNodeTerminated();
@@ -210,7 +210,7 @@ type
     procedure Content();
     procedure LoadData();
     procedure LoadDonates();
-    procedure onUpdated(pItem : TItems);
+    procedure onUpdated(pItem : TUnitDTO);
 
     procedure CaptureConsoleOutput(const ACommand, AParameters: String; AMemo: TMemo);
 
@@ -230,6 +230,8 @@ type
     procedure Notificate(pLogLine : String);
 
     procedure FetchDonates(pDonationsJSON : String);
+
+    procedure AddTextToLog(pText : String);
   public
     { Public declarations }
     const VERSAO = 'v1.00.006';
@@ -257,8 +259,8 @@ var
 implementation
 
 uses
-  DataModulo, PairAdd, REST.Json, FileCtrl, ChangeLOG, KeyForm, Vcl.Themes, PIX,
-  DoadoresDTO;
+  DataModulo, View.PairAdd, REST.Json, FileCtrl, View.ChangeLOG, View.KeyForm, Vcl.Themes, View.PIX,
+  DoadoresDTO, HighlightingRepository, View.HighlightingConfig;
 
 {$R *.dfm}
 
@@ -272,16 +274,34 @@ begin
     setInactive(False);
 end;
 
-procedure TfrmMain.mmLog2SelectionChanged(Sender: TObject);
+procedure TfrmMain.AddTextToLog(pText: String);
+var
+    mFontColor : TColor;
+    mItem : TItemsDTO;
 begin
-    mmLog2.SetSelectionHighlight;
+    mFontColor := mmLog.Font.Color;
+
+    for mItem in FHightlightingDTO.Items do
+    begin
+        try
+            if (pText + '_').ToUpper.Contains(mItem.Astring.ToUpper) then
+                mFontColor := StringToColor( mItem.Color );
+        except
+        end;
+    end;
+
+    mmLog.BeginUpdate;
+    mmLog.AddText(pText, mFontColor);
+    mmLog.AddLineBreak;
+
+    if Not chkAutoScroll.Checked then
+        mmLog.ScrollToEnd;
+    mmLog.EndUpdate;
 end;
 
 procedure TfrmMain.btnFimLogClick(Sender: TObject);
 begin
-    mmLog.ScrollToBottom;
-    mmLog.GotoEnd;
-    mmLog.CurX := 22;
+    mmLog.GotoTextEnd;
 end;
 
 procedure TfrmMain.btnLogExpandClick(Sender: TObject);
@@ -616,12 +636,12 @@ end;
 
 procedure TfrmMain.btnCopyToAllClick(Sender: TObject);
 var
-    mItem : TItems;
+    mItem : TUnitDTO;
     mQry      : TFdQuery;
     mInactive : Integer;
     mSQL : String;
 begin
-    mItem        := TItems.Create;
+    mItem        := TUnitDTO.Create;
 
     mItem.AsJson := qryDados.FieldByName('json').AsString;
     mInactive    := qryDados.FieldByName('inactive').AsInteger;
@@ -667,12 +687,11 @@ begin
     end;
 
     try
-        mmLog.Lines.Clear;
-        mmLog2.Clear;
-        mmLog.Lines.SaveToFile(FEncryptosBotPath + '\notification.log');
-        mmLog.GotoBegin;
+        mmLog.Clear;
+        mmLog.SaveToFile(FEncryptosBotPath + '\notification.log');
+        mmLog.GotoTextBegin;
     except on E: Exception do
-        mmLog.Lines.Add(E.Message);
+        mmLog.AddText(E.Message, clBlack, clRed);
     end;
 end;
 
@@ -739,14 +758,6 @@ begin
     stopBot;
 end;
 
-procedure TfrmMain.Button1Click(Sender: TObject);
-begin
-    if not Assigned(FAlerts) then
-        FALerts := TPairList.Create;
-
-    FALerts.Add(mmLog.Selection);
-end;
-
 procedure TfrmMain.dbgDadosDblClick(Sender: TObject);
 begin
     ToggleInactive;
@@ -792,7 +803,7 @@ end;
 
 function TfrmMain.doConfigFile: boolean;
 var
-    mItem : TItems;
+    mItem : TUnitDTO;
     mQry : TFDQuery;
     mSQL : String;
     mConfigFile : TStringList;
@@ -821,9 +832,8 @@ begin
 
             while not mQry.Eof do
             begin
-                mItem := TItems.Create;
+                mItem := TUnitDTO.Create;
                 mItem.AsJson := mQry.FieldByName('json').AsString;
-                //mItem.Symbol := mQry.FieldByName('name').AsString;
 
                 if mItem.Interval.Count > 0 then
                     FActivePairs.Items.Add(mItem);
@@ -853,14 +863,13 @@ begin
             Result := True;
         Except on E: Exception do
         begin
-            mmLog.Lines.Add(E.Message);
+            mmConsole.Lines.Add(E.Message);
             Result := False;
         end;
         end;
     finally
         FreeAndNil(mQry);
         FreeAndNil(mConfigFile);
-        //FreeAndNil(mRoot);
     end;
 
 end;
@@ -956,23 +965,13 @@ begin
 end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
-var
-    mFile : TStringList;
 begin
-    //Self.WindowState := wsMaximized;
     pgControl.ActivePage := tsLog;
 
     mmConsole.Lines.Clear;
     mmConsole.Lines.Text := CRT;
 
-    FCustomStyle := TAdvCustomMemoStyler.Create(nil);
-
-    FCustomStyle.HighlightStyle.BkColor := $001CBD34;
-    FCustomStyle.NumberStyle.BkColor    := clNone;
-    FCustomStyle.NumberStyle.TextColor  := mmLog.Font.Color;
-    FCustomStyle.NumberStyle.Style      := [];
-
-    mmLog.SyntaxStyles := FCustomStyle;
+    RecarregarHighlightingConfig();
 
     FMonitoring       := False;
     FReloading        := False;
@@ -981,7 +980,7 @@ begin
     FFileMonitorTask  := Nil;
     FBotStartTask     := Nil;
 
-    FActivePairs      := TRoot.Create;
+    FActivePairs      := TBotConfigRootDTO.Create;
 
     frmPair.setCallBack(Self);
 
@@ -1010,6 +1009,7 @@ begin
     FSelectedItem.Free;
     FActivePairs.Free;
     FCustomStyle.Free;
+    FHightlightingDTO.Free;
 end;
 
 procedure TfrmMain.FormKeyDown(Sender: TObject; var Key: Word;
@@ -1020,6 +1020,9 @@ begin
 end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
+var
+    mLog : TStringList;
+  I: Integer;
 begin
     btnStop.Left    := btnStart.Left;
     btnStop.Top     := btnStart.Top;
@@ -1038,9 +1041,17 @@ begin
         Free;
     end;
 
-    mmLog.Lines.LoadFromFile(FEncryptosBotPath + '\notification.log');
-    mmLog.GotoEnd;
-    mmLog.CurX := 22;
+    mLog := TStringList.Create;
+
+    mLog.LoadFromFile(FEncryptosBotPath + '\notification.log');
+
+    for I := 0 to Pred(mLog.Count) do
+    begin
+        AddTextToLog(mLog.Strings[I]);
+    end;
+
+    mLog.Free;
+    //mmLog.LoadFromFile(FEncryptosBotPath + '\notification.log');
 end;
 
 function TfrmMain.getConfigFile: TIniFile;
@@ -1144,16 +1155,6 @@ begin
     qryDoacoes.Open(mSQL);
 end;
 
-procedure TfrmMain.mmLogCursorChange(Sender: TObject);
-begin
-    mmLog.HighlightText := mmLog.WordAtCursor;
-end;
-
-procedure TfrmMain.mmLogSelectionChange(Sender: TObject);
-begin
-    mmLog.HighlightText := mmLog.Selection;
-end;
-
 procedure TfrmMain.Monitoring(pMonitoring: Boolean);
 begin
     btnStop.Visible  := pMonitoring;
@@ -1167,8 +1168,6 @@ procedure TfrmMain.Notificate(pLogLine : String);
 var
     mNotification : TNotification;
 
-    mPairName : String;
-    mMessage : String;
 begin
     if chkNoAlerts.Checked then
         Exit;
@@ -1268,7 +1267,7 @@ begin
     Monitoring(False);
 end;
 
-procedure TfrmMain.onUpdated(pItem: TItems);
+procedure TfrmMain.onUpdated(pItem: TUnitDTO);
 begin
     FSelectedItem := pItem;
 
@@ -1297,7 +1296,7 @@ begin
     if DataSet.RecordCount <= 0 then
         Exit;
 
-    FSelectedItem := TItems.Create;
+    FSelectedItem := TUnitDTO.Create;
 
     FSelectedItem.AsJson   := DataSet.FieldByName('json').AsString;
     FSelectedItem.Inactive := DataSet.FieldByName('inactive').AsInteger > 0;
@@ -1331,6 +1330,17 @@ begin
     LoadData;
 
     edtLocate.SetFocus;
+end;
+
+procedure TfrmMain.RecarregarHighlightingConfig;
+var
+    mHighRepo : THighlightingRepository;
+begin
+    FHightlightingDTO.Free;
+
+    mHighRepo          := THighlightingRepository.Create;
+    FHightlightingDTO  := mHighRepo.getRootDTO;
+    mHighRepo.Free;
 end;
 
 procedure TfrmMain.RestartBot;
@@ -1505,10 +1515,22 @@ end;
 
 procedure TfrmMain.LogFinder;
 begin
-    if mmLog.FindText(edtLogSearch.Text, [freFindNext, freDisableUpDown, freDisableWholeWord]) < 0 then
-    begin
-        mmLog.GotoEnd;
-        mmLog.FindText(edtLogSearch.Text, [freFindNext, freDisableUpDown, freDisableWholeWord]);
+    if mmLog.Find(edtLogSearch.Text) then
+        mmLog.ScrollToCaret;
+
+end;
+
+procedure TfrmMain.LogHighlighting1Click(Sender: TObject);
+begin
+    if frmHighlighting = nil then
+        Application.CreateForm(TfrmHighlighting, frmHighlighting);
+
+    try
+        if frmHighlighting.ShowModal = mrOK then
+            RecarregarHighlightingConfig;
+    finally
+        frmHighlighting.Release;
+        frmHighlighting := Nil;
     end;
 end;
 
@@ -1522,12 +1544,10 @@ begin
     FFileMonitorTask := TTask.Create(
         procedure
         var
-            mFile : TStringList;
+            mFile            : TStringList;
             mLastLine        : Integer;
             mLastLineContent : String;
-            I: Integer;
-
-            mFileStream : TFileStream;
+            mFileStream      : TFileStream;
         begin
             mFile := TStringList.Create;
 
@@ -1535,7 +1555,7 @@ begin
 
             mLastLine         := 0;
             mLastLineContent  := '';
-            mmLog.GotoEnd;
+            mmLog.GotoTextEnd;
 
             mFile.LoadFromStream(mFileStream);
             //mFile.LoadFromFile(FEncryptosBotPath + '\notification.log');
@@ -1558,7 +1578,7 @@ begin
                             mFileStream.Free;
                             mFileStream := TFileStream.Create(FEncryptosBotPath + '\notification.log', fmOpenRead or fmShareDenyNone);
                             mmLog.Clear;
-                            mmLog.GotoBegin;
+                            mmLog.GotoTextBegin;
 
                         End;
 
@@ -1580,23 +1600,16 @@ begin
                             mLineContent : String;
                             mLevelPos : Integer;
                         begin
-                            mmLog.BeginUpdate;
+                            //mmLog.BeginUpdate;
                             while mLastLine < mFile.Count do
                             begin
                                 mLineContent := mFile.Strings[mLastLine];
-                                mmLog.Lines.Append( mLineContent );
-
+                                //mmLog.Lines.Append( mLineContent );
+                                AddTextToLog( mLineContent );
                                 mLastLine    := mLastLine + 1;
-
-                                mmLog2.AddText( mLineContent , clGreen);
-                                mmLog2.AddLineBreak;
-
                                 Notificate(mLineContent);
                             end;
-                            mmLog.EndUpdate;
-
-                            if Not chkAutoScroll.Checked then
-                                mmLog.ScrollToBottom;
+                            //mmLog.EndUpdate;
                         end
                     );
 

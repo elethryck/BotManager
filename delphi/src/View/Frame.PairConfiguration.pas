@@ -1,16 +1,16 @@
-unit PairConfiguration;
+unit Frame.PairConfiguration;
 
 interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls,
-  Vcl.StdCtrls, Vcl.ComCtrls, RootUnit;
+  Vcl.StdCtrls, Vcl.ComCtrls, BotConfigRootDTO;
 
 type
     IPairConfigurationUpdated = interface
         ['{CC842D15-6C8C-4EB9-BCDE-EB86255DC48E}']
-        procedure onUpdated(pItem : TItems);
+        procedure onUpdated(pItem : TUnitDTO);
     end;
 
   TfrmPairConfiguration = class(TFrame)
@@ -47,7 +47,7 @@ type
     procedure chkSoundClick(Sender: TObject);
   private
     { Private declarations }
-    FItem : TItems;
+    FItem : TUnitDTO;
 
     FisFetching : Boolean;
     FCallBack   : IPairConfigurationUpdated;
@@ -58,7 +58,7 @@ type
     procedure onUpdated();
   public
     { Public declarations }
-    procedure Fetch(pItem : TItems);
+    procedure Fetch(pItem : TUnitDTO);
 
     procedure setCallBack(pCallBack : IPairConfigurationUpdated);
     procedure ToggleInactive();
@@ -118,7 +118,7 @@ begin
     FisFetching := False;
 end;
 
-procedure TfrmPairConfiguration.Fetch(pItem : TItems);
+procedure TfrmPairConfiguration.Fetch(pItem : TUnitDTO);
 var
   I: Integer;
   s: String;
