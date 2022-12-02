@@ -10,7 +10,8 @@ uses
   cxLookAndFeelPainters, Vcl.Menus, Vcl.DBCGrids, Vcl.StdCtrls, cxButtons,
   Vcl.ComCtrls, HighlightingDTO, Vcl.Mask, AdvDropDown, AdvColorPickerDropDown,
   cxControls, cxContainer, cxEdit, dxCore, cxTextEdit, cxMaskEdit,
-  cxDropDownEdit, dxColorEdit, dxDBColorEdit, HighlightingRepository;
+  cxDropDownEdit, dxColorEdit, dxDBColorEdit, HighlightingRepository,
+  Vcl.Buttons;
 
 type
   TfrmHighlighting = class(TForm)
@@ -18,14 +19,14 @@ type
     GroupBox1: TGroupBox;
     colorSelector: TAdvOfficeColorSelector;
     edtString: TEdit;
-    btnAdd: TcxButton;
     GroupBox2: TGroupBox;
-    btnMoveUP: TcxButton;
-    btnMoveDown: TcxButton;
-    btnDel: TcxButton;
-    btnClose: TcxButton;
-    btnSave: TcxButton;
     lvDados: TListView;
+    btnSave: TBitBtn;
+    btnClose: TBitBtn;
+    btnMoveUP: TBitBtn;
+    btnMoveDown: TBitBtn;
+    btnDel: TBitBtn;
+    btnAdd: TBitBtn;
     procedure btnAddClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure lvDadosCustomDrawItem(Sender: TCustomListView; Item: TListItem;
@@ -63,6 +64,7 @@ uses DataModulo;
 procedure TfrmHighlighting.btnAddClick(Sender: TObject);
 begin
     lvDados.AddItem(edtString.Text, TObject(colorSelector.SelectedColor) );
+    edtString.Clear;
 end;
 
 procedure TfrmHighlighting.btnCloseClick(Sender: TObject);

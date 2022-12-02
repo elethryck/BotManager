@@ -43,7 +43,7 @@ object frmMain: TfrmMain
         TabOrder = 0
         object pnlLogHeader: TPanel
           Left = 1
-          Top = 74
+          Top = 53
           Width = 563
           Height = 41
           Align = alTop
@@ -157,7 +157,7 @@ object frmMain: TfrmMain
             OnClick = btnLogExpandClick
           end
           object btnLogExpandAux: TAdvShapeButton
-            Left = 290
+            Left = 507
             Top = 10
             Width = 25
             Height = 25
@@ -348,6 +348,7 @@ object frmMain: TfrmMain
             Height = 25
             Anchors = [akLeft, akBottom]
             Caption = 'Limpar Log'
+            ImageIndex = 4
             Kind = bkRetry
             NumGlyphs = 2
             TabOrder = 0
@@ -360,6 +361,7 @@ object frmMain: TfrmMain
             Height = 25
             Anchors = [akRight, akBottom]
             Caption = 'Matar Processos'
+            ImageIndex = 0
             Kind = bkAbort
             NumGlyphs = 2
             TabOrder = 1
@@ -379,7 +381,7 @@ object frmMain: TfrmMain
           Left = 1
           Top = 1
           Width = 563
-          Height = 73
+          Height = 52
           Align = alTop
           BevelOuter = bvNone
           TabOrder = 2
@@ -409,16 +411,13 @@ object frmMain: TfrmMain
             Left = 0
             Top = 23
             Width = 563
-            Height = 50
+            Height = 29
             Align = alClient
             Style = bsRaised
-            ExplicitLeft = 5
-            ExplicitTop = 6
-            ExplicitWidth = 596
-            ExplicitHeight = 75
+            ExplicitTop = 22
           end
           object chkOnlyX: TCheckBox
-            Left = 15
+            Left = 152
             Top = 29
             Width = 170
             Height = 17
@@ -427,8 +426,8 @@ object frmMain: TfrmMain
             OnClick = chkOnlyXClick
           end
           object chkLSRAlert: TCheckBox
-            Left = 15
-            Top = 52
+            Left = 351
+            Top = 29
             Width = 138
             Height = 17
             Caption = 'Notificar alertas de LSR'
@@ -436,7 +435,7 @@ object frmMain: TfrmMain
             OnClick = chkLSRAlertClick
           end
           object chkNoAlerts: TCheckBox
-            Left = 215
+            Left = 8
             Top = 29
             Width = 122
             Height = 17
@@ -447,12 +446,12 @@ object frmMain: TfrmMain
         end
         object mmLog: TAdvRichEditor
           Left = 1
-          Top = 115
+          Top = 94
           Width = 563
           Height = 421
           Cursor = crIBeam
           HorzScrollBar.Tracking = True
-          VertScrollBar.Range = 1
+          VertScrollBar.Range = 6
           VertScrollBar.Smooth = True
           VertScrollBar.Style = ssHotTrack
           VertScrollBar.Tracking = True
@@ -468,8 +467,40 @@ object frmMain: TfrmMain
           HighlightColor = 1883444
           ParentFont = False
           Version = '1.8.3.2'
-          ExplicitTop = 345
-          ExplicitHeight = 191
+        end
+        object pnlLogStatusBar: TPanel
+          Left = 1
+          Top = 515
+          Width = 563
+          Height = 21
+          Align = alBottom
+          TabOrder = 4
+          object Label7: TLabel
+            Left = 4
+            Top = 3
+            Width = 34
+            Height = 13
+            Caption = 'Linhas:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 1883444
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
+          end
+          object lblLogLines: TLabel
+            Left = 44
+            Top = 4
+            Width = 6
+            Height = 13
+            Caption = '0'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 1883444
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
+          end
         end
       end
     end
@@ -638,6 +669,7 @@ object frmMain: TfrmMain
         Width = 75
         Height = 25
         Caption = 'Adicionar'
+        ImageIndex = 5
         TabOrder = 1
         OnClick = btnAddPairClick
       end
@@ -647,6 +679,7 @@ object frmMain: TfrmMain
         Width = 196
         Height = 25
         Caption = 'Salvar Config ( CTRL + S )'
+        ImageIndex = 6
         Kind = bkRetry
         NumGlyphs = 2
         TabOrder = 2
@@ -4289,6 +4322,7 @@ object frmMain: TfrmMain
       Width = 114
       Height = 25
       Caption = 'IniciarBOT'
+      ImageIndex = 2
       ModalResult = 1
       NumGlyphs = 2
       TabOrder = 7
@@ -4300,6 +4334,7 @@ object frmMain: TfrmMain
       Width = 114
       Height = 25
       Caption = 'Parar BOT'
+      ImageIndex = 3
       ModalResult = 3
       NumGlyphs = 2
       TabOrder = 8

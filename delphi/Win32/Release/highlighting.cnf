@@ -2,16 +2,6 @@
     "items":[
       {
         "bold":false,
-        "color":"$000909FF",
-        "astring":"TRADE DOWN"
-      },
-      {
-        "bold":false,
-        "color":"clLime",
-        "astring":"TRADE UP"
-      },
-      {
-        "bold":false,
         "color":"$00999999",
         "astring":"L\/S"
       },
@@ -19,6 +9,16 @@
         "bold":false,
         "color":"clFuchsia",
         "astring":"BTCUSDT"
+      },
+      {
+        "bold":false,
+        "color":"$000909FF",
+        "astring":"TRADE DOWN"
+      },
+      {
+        "bold":false,
+        "color":"clLime",
+        "astring":"TRADE UP"
       },
       {
         "bold":false,

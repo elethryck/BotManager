@@ -20,7 +20,14 @@ uses
   REST.Client, Data.Bind.Components, Data.Bind.ObjectScope, AdvCircularProgress,
   cxClasses, cxStyles, HighlightingDTO, dxSkinsCore, dxSkinOffice2013DarkGray,
   dxSkinVisualStudio2013Light, cxGraphics, cxLookAndFeels,
-  cxLookAndFeelPainters, cxButtons;
+  cxLookAndFeelPainters, cxButtons, dxSkinDevExpressDarkStyle,
+  dxSkinMetropolisDark, dxCore, dxSkinsForm, dxSkinVisualStudio2013Dark,
+  cxControls, cxContainer, cxEdit, AdvFontCombo, cxTextEdit, cxMaskEdit,
+  cxSpinEdit, Vcl.Mask, AdvSpin, dxCoreClasses, dxGDIPlusAPI, dxGDIPlusClasses,
+  dxRichEdit.NativeApi, dxRichEdit.Types, dxRichEdit.Options,
+  dxRichEdit.Control, dxRichEdit.Control.SpellChecker,
+  dxRichEdit.Dialogs.EventArgs, dxBarBuiltInMenu,
+  dxRichEdit.Platform.Win.Control, dxRichEdit.Control.Core, cxMemo, cxRichEdit;
 
 type
 
@@ -105,6 +112,9 @@ type
     btnStop: TBitBtn;
     Configurao1: TMenuItem;
     LogHighlighting1: TMenuItem;
+    pnlLogStatusBar: TPanel;
+    Label7: TLabel;
+    lblLogLines: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure btnStartClick(Sender: TObject);
     procedure btnStopClick(Sender: TObject);
@@ -231,7 +241,7 @@ type
 
     procedure FetchDonates(pDonationsJSON : String);
 
-    procedure AddTextToLog(pText : String);
+    procedure AddTextToLog(pStrings : TStrings);
   public
     { Public declarations }
     const VERSAO = 'v1.00.006';
@@ -274,29 +284,41 @@ begin
     setInactive(False);
 end;
 
-procedure TfrmMain.AddTextToLog(pText: String);
+procedure TfrmMain.AddTextToLog(pStrings: TStrings);
 var
     mFontColor : TColor;
     mItem : TItemsDTO;
+    s : String;
 begin
     mFontColor := mmLog.Font.Color;
 
-    for mItem in FHightlightingDTO.Items do
-    begin
-        try
-            if (pText + '_').ToUpper.Contains(mItem.Astring.ToUpper) then
-                mFontColor := StringToColor( mItem.Color );
-        except
-        end;
-    end;
-
     mmLog.BeginUpdate;
-    mmLog.AddText(pText, mFontColor);
-    mmLog.AddLineBreak;
+
+    for s in pStrings do
+    begin
+        for mItem in FHightlightingDTO.Items do
+        begin
+            try
+                if (s + '_').ToUpper.Contains(mItem.Astring.ToUpper) then
+                begin
+                    mFontColor := StringToColor( mItem.Color );
+                end;
+            except
+            end;
+        end;
+
+        mmLog.AddText(s, mFontColor);
+        mmLog.AddLineBreak;
+
+        lblLogLines.Caption := Format('%d',[ mmLog.LineCount]);
+    end;
 
     if Not chkAutoScroll.Checked then
         mmLog.ScrollToEnd;
+
+    mmLog.Repaint;
     mmLog.EndUpdate;
+
 end;
 
 procedure TfrmMain.btnFimLogClick(Sender: TObject);
@@ -1022,7 +1044,8 @@ end;
 procedure TfrmMain.FormShow(Sender: TObject);
 var
     mLog : TStringList;
-  I: Integer;
+
+    mLogLoader : ITask;
 begin
     btnStop.Left    := btnStart.Left;
     btnStop.Top     := btnStart.Top;
@@ -1041,17 +1064,28 @@ begin
         Free;
     end;
 
-    mLog := TStringList.Create;
+    mLogLoader := TTask.Create(
+        procedure
+        var
+            I : Integer;
+        begin
+            mLog := TStringList.Create;
 
-    mLog.LoadFromFile(FEncryptosBotPath + '\notification.log');
+            mLog.LoadFromFile(FEncryptosBotPath + '\notification.log');
 
-    for I := 0 to Pred(mLog.Count) do
-    begin
-        AddTextToLog(mLog.Strings[I]);
-    end;
+            {for I := 0 to Pred(mLog.Count) do
+            begin
+                  AddTextToLog(mLog.Strings[I]);
+            end;
+            }
 
-    mLog.Free;
-    //mmLog.LoadFromFile(FEncryptosBotPath + '\notification.log');
+            AddTextToLog(mLog);
+
+            mLog.Free;
+        end
+    );
+
+    mLogLoader.Start;
 end;
 
 function TfrmMain.getConfigFile: TIniFile;
@@ -1599,17 +1633,22 @@ begin
                         var
                             mLineContent : String;
                             mLevelPos : Integer;
+                            mObj : TStringList;
                         begin
-                            //mmLog.BeginUpdate;
                             while mLastLine < mFile.Count do
                             begin
                                 mLineContent := mFile.Strings[mLastLine];
                                 //mmLog.Lines.Append( mLineContent );
-                                AddTextToLog( mLineContent );
+
+                                mObj := TStringList.Create;
+
+                                mObj.Add(mLineContent);
+                                AddTextToLog( mObj );
+                                mObj.Free;
+
                                 mLastLine    := mLastLine + 1;
                                 Notificate(mLineContent);
                             end;
-                            //mmLog.EndUpdate;
                         end
                     );
 
