@@ -107,7 +107,6 @@ type
     Panel2: TPanel;
     Label6: TLabel;
     btnFimLog: TAdvShapeButton;
-    mmLog: TAdvRichEditor;
     btnStart: TBitBtn;
     btnStop: TBitBtn;
     Configurao1: TMenuItem;
@@ -115,6 +114,7 @@ type
     pnlLogStatusBar: TPanel;
     Label7: TLabel;
     lblLogLines: TLabel;
+    mmLog: TcxRichEdit;
     procedure FormCreate(Sender: TObject);
     procedure btnStartClick(Sender: TObject);
     procedure btnStopClick(Sender: TObject);
@@ -244,7 +244,7 @@ type
     procedure AddTextToLog(pStrings : TStrings);
   public
     { Public declarations }
-    const VERSAO = 'v1.00.006';
+    const VERSAO = 'v1.00.007 BETA';
     const CRT = '+------------------------------------------------------------+'+ #13 +
                 '|               Bot Manager for Encryptos Bot                |'+ #13 +
                 '+------------------------------------------------------------+'+ #13 +
@@ -290,9 +290,10 @@ var
     mItem : TItemsDTO;
     s : String;
 begin
-    mFontColor := mmLog.Font.Color;
+    mFontColor := mmLog.SelAttributes.Color;
 
-    mmLog.BeginUpdate;
+    //mmLog.BeginUpdate;
+
 
     for s in pStrings do
     begin
@@ -307,23 +308,22 @@ begin
             end;
         end;
 
-        mmLog.AddText(s, mFontColor);
-        mmLog.AddLineBreak;
+        mmLog.SelAttributes.Color := mFontColor;
 
-        lblLogLines.Caption := Format('%d',[ mmLog.LineCount]);
+        mmLog.Lines.Append(s);
+
+        lblLogLines.Caption := Format('%d',[ mmLog.Lines.Count]);
     end;
 
+    //pStrings.Free;
+
     if Not chkAutoScroll.Checked then
-        mmLog.ScrollToEnd;
-
-    mmLog.Repaint;
-    mmLog.EndUpdate;
-
+        mmLog.Perform(EM_SCROLLCARET, 0, 0);
 end;
 
 procedure TfrmMain.btnFimLogClick(Sender: TObject);
 begin
-    mmLog.GotoTextEnd;
+    mmLog.Perform(EM_SCROLLCARET, 0, 0);
 end;
 
 procedure TfrmMain.btnLogExpandClick(Sender: TObject);
@@ -710,10 +710,12 @@ begin
 
     try
         mmLog.Clear;
-        mmLog.SaveToFile(FEncryptosBotPath + '\notification.log');
-        mmLog.GotoTextBegin;
+        mmLog.Lines.SaveToFile(FEncryptosBotPath + '\notification.log');
     except on E: Exception do
-        mmLog.AddText(E.Message, clBlack, clRed);
+    begin
+        mmLog.SelAttributes.Color := clRed;
+        mmLog.Lines.Append(E.Message);
+    end;
     end;
 end;
 
@@ -1449,7 +1451,8 @@ end;
 
 procedure TfrmMain.tmrDonatesTimer(Sender: TObject);
 begin
-    tmrDonates.Interval := 1000 * 60 * 15; //15 minutos para atualizar novamente
+
+    tmrDonates.Interval := 1000 * 60 * 120; //2 horas para atualizar novamente
     RESTClient.BaseURL := 'http://botmanager.netlify.app/.netlify/functions/donates';
     RESTRequest.Method := rmGET;
     RESTRequest.ExecuteAsync(
@@ -1549,9 +1552,7 @@ end;
 
 procedure TfrmMain.LogFinder;
 begin
-    if mmLog.Find(edtLogSearch.Text) then
-        mmLog.ScrollToCaret;
-
+    mmLog.FindTexT(edtLogSearch.Text, 0, 0, []);
 end;
 
 procedure TfrmMain.LogHighlighting1Click(Sender: TObject);
@@ -1589,7 +1590,7 @@ begin
 
             mLastLine         := 0;
             mLastLineContent  := '';
-            mmLog.GotoTextEnd;
+            //mmLog.GotoTextEnd;
 
             mFile.LoadFromStream(mFileStream);
             //mFile.LoadFromFile(FEncryptosBotPath + '\notification.log');
@@ -1612,7 +1613,7 @@ begin
                             mFileStream.Free;
                             mFileStream := TFileStream.Create(FEncryptosBotPath + '\notification.log', fmOpenRead or fmShareDenyNone);
                             mmLog.Clear;
-                            mmLog.GotoTextBegin;
+                            //mmLog.GotoTextBegin;
 
                         End;
 

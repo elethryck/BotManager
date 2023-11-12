@@ -41,6 +41,9 @@ object frmMain: TfrmMain
         Align = alClient
         Caption = 'pnlLog'
         TabOrder = 0
+        DesignSize = (
+          565
+          578)
         object pnlLogHeader: TPanel
           Left = 1
           Top = 53
@@ -419,7 +422,7 @@ object frmMain: TfrmMain
           object chkOnlyX: TCheckBox
             Left = 152
             Top = 29
-            Width = 170
+            Width = 185
             Height = 17
             Caption = 'Notificar somente alertas com X'
             TabOrder = 0
@@ -444,37 +447,13 @@ object frmMain: TfrmMain
             OnClick = chkNoAlertsClick
           end
         end
-        object mmLog: TAdvRichEditor
-          Left = 1
-          Top = 94
-          Width = 563
-          Height = 421
-          Cursor = crIBeam
-          HorzScrollBar.Tracking = True
-          VertScrollBar.Range = 6
-          VertScrollBar.Smooth = True
-          VertScrollBar.Style = ssHotTrack
-          VertScrollBar.Tracking = True
-          Align = alClient
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = 10241328
-          Font.Height = -13
-          Font.Name = 'Courier New'
-          Font.Style = []
-          ReadOnly = True
-          TabOrder = 3
-          TabStop = True
-          HighlightColor = 1883444
-          ParentFont = False
-          Version = '1.8.3.2'
-        end
         object pnlLogStatusBar: TPanel
           Left = 1
           Top = 515
           Width = 563
           Height = 21
           Align = alBottom
-          TabOrder = 4
+          TabOrder = 3
           object Label7: TLabel
             Left = 4
             Top = 3
@@ -501,6 +480,35 @@ object frmMain: TfrmMain
             Font.Style = []
             ParentFont = False
           end
+        end
+        object mmLog: TcxRichEdit
+          Left = 2
+          Top = 90
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          ParentFont = False
+          Properties.ReadOnly = True
+          Properties.ScrollBars = ssBoth
+          Properties.SelectionBar = True
+          Properties.WantReturns = False
+          Properties.WordWrap = False
+          Style.Color = clNone
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = -13
+          Style.Font.Name = 'Courier New'
+          Style.Font.Style = []
+          Style.LookAndFeel.Kind = lfFlat
+          Style.LookAndFeel.NativeStyle = True
+          Style.IsFontAssigned = True
+          StyleDisabled.LookAndFeel.Kind = lfFlat
+          StyleDisabled.LookAndFeel.NativeStyle = True
+          StyleFocused.LookAndFeel.Kind = lfFlat
+          StyleFocused.LookAndFeel.NativeStyle = True
+          StyleHot.LookAndFeel.Kind = lfFlat
+          StyleHot.LookAndFeel.NativeStyle = True
+          TabOrder = 4
+          Height = 423
+          Width = 559
         end
       end
     end
@@ -4449,8 +4457,8 @@ object frmMain: TfrmMain
     end
   end
   object MainMenu: TMainMenu
-    Left = 584
-    Top = 288
+    Left = 576
+    Top = 272
     object File1: TMenuItem
       Caption = 'Arquivo'
       object pmmKey: TMenuItem

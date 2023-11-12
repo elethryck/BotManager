@@ -34,9 +34,6 @@ Coordinates=10,386,114,58
 [frmPair.chk1h]
 Coordinates=1118,10,114,58
 
-[mmLog]
-Coordinates=1091,658,57,36
-
 [frmPair.chk4h]
 Coordinates=507,10,114,58
 
@@ -327,5 +324,5 @@ Coordinates=387,10,110,58
 Visible=True
 
 []
-Coordinates=631,10,72,58
+Coordinates=1091,658,57,36
 
